@@ -1,0 +1,142 @@
+.. vim: ft=rst sts=2 sw=2 tw=77
+.. default-role:: literal
+
+=============================================================================
+                                 git-mantle
+=============================================================================
+-----------------------------------------------------------------------------
+              Git pull requests with higher information density
+-----------------------------------------------------------------------------
+
+:Author: Roman Neuhauser
+:Contact: neuhauser@sigpipe.cz
+:Copyright: This document is in the public domain.
+
+.. this file is marked up using reStructuredText
+   lines beginning with ".." are reST directives
+   "foo_" or "`foo bar`_" is a link, defined at ".. _foo" or ".. _foo bar"
+   "::" introduces a literal block (usually some form of code)
+   "`foo`" is some kind of identifier
+   suspicious backslashes in the text ("`std::string`\s") are required for
+   reST to recognize the preceding character as syntax
+
+Introduction
+============
+
+Generate an overview of changes on a branch in the local repository and
+indicate where to pull them from.
+
+`git-mantle` is similar to, yet different from, `git-request-pull(1)`_.
+
+Pull requests are often sent repeatedly: Alice clones Bob's repository,
+commits some changes and sends him a pull request.  Bob reviews the
+proposed changes and requests a few modifications.
+
+Alice tweaks her branch as requested and sends another pull request.
+Bob is a busy person and wants a very quick overview of the differences
+between the old and new pull request.  Alice would do well to tell Bob which
+parts of the patch series changed in the second iteration.
+
+Bob may find `git-mantle`\s output useful since its output contains almost
+no non-functional prose, and includes `<tree-id>`\s of submitted commits,
+and for each submitted commit, the `<blob-id>` of each affected file.
+
+`git-mantle` is used by `git-pimp`_ to create cover letters.
+
+.. _`git-request-pull(1)`: http://git-scm.com/docs/git-request-pull
+.. _`git-pimp`: https://github.com/roman-neuhauser/git-pimp
+
+Synopsis
+========
+
+::
+
+  git mantle [--output FILE] [diffstat-opts] [[upstream] public]
+
+Configuration
+=============
+
+* `mantle.publicurl`, `remote.<name>.url`
+
+  URL used in the output to suggest pulling from.  If `mantle.publicurl`
+  does not exist, `remote.<name>.url` is used.
+
+* `mantle.upstream`
+
+  "Refname" for the target branch.  Defaults to `upstream/master`.
+
+* `mantle.public`
+
+  Name of the remote to offer changes from.  Defaults to `origin`.
+
+Examples
+========
+
+* ::
+
+    git mantle upstream/master rn/feature
+
+  Summarize the changes from `upstream/master` to `rn/feature`, offering
+  them for pull from `remote.rn.url`.
+
+* ::
+
+    git mantle upstream rn/feature
+
+  Summarize the changes from `upstream/HEAD` to `rn/feature`, offering
+  them for pull from `remote.rn.url`.
+
+* ::
+
+    git mantle rn/feature
+
+  Summarize the changes from `mantle.upstream` to `rn/feature`, offering
+  them for pull from `remote.rn.url`.
+
+* ::
+
+    git mantle
+
+  Summarize the changes from `mantle.upstream` to the head of a branch
+  in `mantle.public`, offering them for pull from `remote.<name>.url` where
+  `<name>` is derived from `mantle.public`.  The branch name is derived from
+  the active branch: if the active branch has an upstream branch configured
+  (in `mantle.public`), that branch is used.  If there's no upstream branch
+  configured, a branch eponymous with the active branch is used.
+
+Example output
+==============
+
+::
+
+  repo = git@github.com:roman-neuhauser/anarchinst.git
+  head = 6a91ccd3 readme-updates
+  base = c7303d75 master
+
+  README.rest | 82 +++++++++++++++++++++++++++++------------------------
+  anarchinst  | 69 +++++++++++++++++++++++++++++++++++---------
+  2 files changed, 100 insertions(+), 51 deletions(-)
+
+  * 9edb92da README, --help link to ArchLinux, Zsh
+    5e3722dd README.rest
+    caad946c anarchinst
+  * a3865ae6 --help updated from README
+    f0677ffe anarchinst
+  * e9ed45f0 --readme option based on HELP section
+    33ad3b72 anarchinst
+  * 03388a34 README generated with anarchinst --readme
+    33f981bb README.rest
+    fabbf7b1 anarchinst
+  * 02607989 README: SEE ALSO mentions zsh(1)
+    9b190496 README.rest
+    a4a76e32 anarchinst
+  * 79dd422f README updated
+    c30c57cc README.rest
+    f60962b8 anarchinst
+  * 8fb8340f README: s/quit/exit/ - standardese
+    73fd4609 README.rest
+    e41c75cb anarchinst
+  * 6a91ccd3 readme had a bug (it's $software, not $packages)
+    f961161c README.rest
+    d7ca90be anarchinst
+

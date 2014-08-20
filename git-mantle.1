@@ -1,0 +1,153 @@
+.\" This document is in the public domain.
+.\" vim: fdm=marker
+.
+.\" FRONT MATTER {{{
+.Dd Aug 20, 2014
+.Os
+.Dt GIT-MANTLE 1
+.
+.Sh NAME
+.Nm git-mantle
+.Nd Git pull requests with higher information density
+.\" FRONT MATTER }}}
+.
+.\" SYNOPSIS {{{
+.Sh SYNOPSIS
+.Nm
+.Op Fl -output Ar FILE
+.Op diffstat-opts
+.Op Ar BASE
+.Op Ar HEAD
+.\" SYNOPSIS }}}
+.
+.\" DESCRIPTION {{{
+.Sh DESCRIPTION
+Generate an overview of changes on a branch in the local repository
+and indicate where to pull them from.
+.Pp
+.Nm
+is similar to, yet different from,
+.Xr git-request-pull 1 .
+.Pp
+.Bl -tag -width x
+.It Ar BASE
+"Refname" for the commit to start.  It should be the name of a remote
+tracking branch, like
+.Li upstream/stable .
+If
+.Ar BASE
+contains no slash,
+it's taken for a remote name and its default branch is used.
+.It Ar HEAD
+"Refname" for the top-most commit included in the request.
+.El
+.\" DESCRIPTION }}}
+.\" CONFIGURATION {{{
+.Sh CONFIGURATION
+.Bl -tag -width x
+.It Li mantle.publicurl , remote.<name>.url
+URL used in the output to suggest pulling from.
+If
+.Li mantle.publicurl
+does not exist,
+.Li remote.<name>.url
+is used.
+.It Li mantle.upstream
+"Refname" for the target branch.
+Defaults to
+.Li upstream/master .
+.It Li mantle.public
+Name of the remote to offer changes from.
+Defaults to
+.Li origin .
+.El
+.\" CONFIGURATION }}}
+.\" .Sh IMPLEMENTATION NOTES
+.\" ENVIRONMENT {{{
+.Sh ENVIRONMENT
+.Nm
+itself does not use any environment variables.
+It is, however, implemented in terms of third-party commands
+which
+.Em do
+use them.
+This means
+.Nm
+may be influenced by environment variables used by
+.Xr git 1  ,
+.Xr zsh 1 ,
+possibly others.
+.\" ENVIRONMENT }}}
+.\" FILES {{{
+.\".Sh FILES
+.\" FILES }}}
+.\" EXAMPLES {{{
+.Sh EXAMPLES
+.Bl -tag -width x
+.It Li % git mantle upstream/master rn/feature
+Summarize the changes from
+.Li upstream/master
+to
+.Li rn/feature ,
+offering them for pull from
+.Li mantle.publicurl .
+.
+.It Li % git mantle upstream rn/feature
+Summarize the changes from
+.Li upstream/HEAD
+to
+.Li rn/feature ,
+offering them for pull from
+.Li mantle.publicurl .
+.
+.It Li % git mantle rn/feature
+Summarize the changes from
+.Li mantle.upstream
+to
+.Li rn/feature ,
+offering them for pull from
+.Li mantle.publicurl .
+.
+.It Li % git mantle
+Summarize the changes from
+.Li mantle.upstream
+to the head of a branch in
+.Li mantle.public ,
+offering them for pull from
+.Li remote.<name>.url
+where
+.Li <name>
+is derived from
+.Li mantle.public .
+The branch name is derived from the active branch:
+if the active branch has an upstream branch configured (in
+.Li mantle.public ),
+that branch is used.
+If there's no upstream branch configured,
+a branch eponymous with the active branch is used.
+.\" EXAMPLES }}}
+.\" DIAGNOSTICS {{{
+.Sh DIAGNOSTICS
+.Ex -std
+.\" DIAGNOSTICS }}}
+.\" .Sh COMPATIBILITY
+.\" SEE ALSO {{{
+.Sh SEE ALSO
+.Bl
+.It
+.Xr git-request-pull 1 .
+.El
+.\" SEE ALSO }}}
+.\" .Sh STANDARDS
+.\" .Sh HISTORY
+.\" AUTHORS {{{
+.Sh AUTHORS
+.An Roman Neuhauser Aq Mt rneuhauser@sigpipe.cz
+.Lk https://github.com/roman-neuhauser/git-mantle/
+.\" AUTHORS }}}
+.\" BUGS {{{
+.Sh BUGS
+No doubt plentiful.
+Please report them at
+.Lk https://github.com/roman-neuhauser/git-mantle/issues
+.\" BUGS }}}
