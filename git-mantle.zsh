@@ -4,6 +4,12 @@
 set -o no_unset
 set -o err_return
 
+function complain
+{
+  print ${@[2,-1]} >&2
+  exit $1
+}
+
 function query-git # {{{
 {
   local fmt=$1; shift
@@ -57,17 +63,24 @@ fi
 bhash="$(query-git '%h' $base -- || exit 1)"
 hhash="$(query-git '%h' $head -- || exit 1)"
 
-if [[ $# -eq 0 ]]; then
-#  declare head="$(git symbolic-ref -q --short HEAD)"
-#  [[ -z $head ]] && exit 1
-#  # git-rev-parse complains if HEAD has no tracking branch configured
-#  declare pubr="$(git rev-parse --abbrev-ref 'HEAD@{upstream}')"
-#  [[ -z $pubr ]] && exit 1
-fi
+declare mbase="$(git merge-base $bhash $hhash)" \
+|| complain $? "fatal: no commits in common between $base and $head"
 
 declare purl="$(git config --get remote.$public.url)"
 
 declare -A chashes cmessages
+
+# git-rev-list --format (or --pretty) prepends each commit
+# with "commit %H\n".  it's easier to parse if we throw away
+# this %H instance and request another one in the format string.
+git rev-list --format='%T %H %s' $hhash --not $bhash \
+| while read x y z; do
+    [[ $x == commit ]] && continue
+    chashes+=($x $y)
+    cmessages+=($x $z)
+  done
+
+(( $#chashes )) || complain 1 "fatal: '$base..$head' is an empty range"
 
 # repo = git@github.com:roman-neuhauser/anarchinst.git
 # head = 6a91ccd3 readme-updates
@@ -79,19 +92,9 @@ print -f 'base = %s %s\n' $bhash $base
 
 if [[ -n $do_stat ]]; then
   print
-  git diff $do_stat $head --not $base
+  git diff $do_stat $hhash --not $mbase
   print
 fi
-
-# git-rev-list --format (or --pretty) prepends each commit
-# with "commit %H\n".  it's easier to parse if we throw away
-# this %H instance and request another one in the format string.
-git rev-list --format='%T %H %s' $head --not $base \
-| while read x y z; do
-    [[ $x == commit ]] && continue
-    chashes+=($x $y)
-    cmessages+=($x $z)
-  done
 
 # git rev-list --objects has the same output as without --objects,
 # followed by, for each commit:
@@ -99,7 +102,7 @@ git rev-list --format='%T %H %s' $head --not $base \
 #   <blob-id> SP <path> LF
 #   ...
 # we skip the initial run of lines that just list the <commit-id>s
-git rev-list --reverse --objects $head --not $base \
+git rev-list --reverse --objects $hhash --not $bhash \
 | tail -n +$((1 + $#chashes)) \
 | while read x y; do
     if [[ -z $y ]]; then # this is a <tree-id> line

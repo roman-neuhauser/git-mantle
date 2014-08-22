@@ -37,6 +37,15 @@ base not found in upstream
   [1]
 
 
+base not an ancestor of head
+****************************
+
+::
+
+  $ git mantle rn/feature up/master
+  fatal: 'rn/feature..up/master' is an empty range
+  [1]
+
 happy path
 **********
 
