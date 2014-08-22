@@ -12,8 +12,7 @@ function complain
 
 function query-git # {{{
 {
-  local fmt=$1; shift
-  git show --no-patch --format=$fmt "$@"
+  git show --no-patch --format=$1 "${@[2,-1]}"
 } # }}}
 
 declare do_stat=--stat=72 output=
