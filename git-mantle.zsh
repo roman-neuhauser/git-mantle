@@ -87,11 +87,11 @@ fi
 # with "commit %H\n".  it's easier to parse if we throw away
 # this %H instance and request another one in the format string.
 git rev-list --format='%T %H %s' $head --not $base \
-  | while read x y z; do
-      [[ $x == commit ]] && continue
-      chashes+=($x $y)
-      cmessages+=($x $z)
-    done
+| while read x y z; do
+    [[ $x == commit ]] && continue
+    chashes+=($x $y)
+    cmessages+=($x $z)
+  done
 
 # git rev-list --objects has the same output as without --objects,
 # followed by, for each commit:
@@ -100,14 +100,14 @@ git rev-list --format='%T %H %s' $head --not $base \
 #   ...
 # we skip the initial run of lines that just list the <commit-id>s
 git rev-list --reverse --objects $head --not $base \
-  | tail -n +$((1 + $#chashes)) \
-  | while read x y; do
-      if [[ -z $y ]]; then # this is a <tree-id> line
-        local chash=$chashes[$x]
-        local cmesg=$cmessages[$x]
-        print -f '# %s %s %s\n' ${x:0:8} ${chash:0:8} $cmesg
-        continue
-      fi
-      print -f '  %s %s\n' ${x:0:8} $y
-    done
+| tail -n +$((1 + $#chashes)) \
+| while read x y; do
+    if [[ -z $y ]]; then # this is a <tree-id> line
+      local chash=$chashes[$x]
+      local cmesg=$cmessages[$x]
+      print -f '# %s %s %s\n' ${x:0:8} ${chash:0:8} $cmesg
+      continue
+    fi
+    print -f '  %s %s\n' ${x:0:8} $y
+  done
 
