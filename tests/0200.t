@@ -53,8 +53,8 @@ them for pull from `remote.rn.url`.
    README     | 2 +-
    2 files changed, 2 insertions(+), 1 deletion(-)
   
-  # 76a23b86 043603cc README fancier
-    162441d0 README
-  # 87990615 ab984c9b ignore vim swapfiles
-    32682119 .gitignore
+  2/2 76a23b86 043603cc README fancier
+      162441d0 README
+  1/2 87990615 ab984c9b ignore vim swapfiles
+      32682119 .gitignore
 

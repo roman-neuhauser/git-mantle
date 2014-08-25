@@ -101,15 +101,20 @@ fi
 #   <blob-id> SP <path> LF
 #   ...
 # we skip the initial run of lines that just list the <commit-id>s
+declare -i i=0 nhashes=$#chashes
+declare -i seqwidth=$#nhashes
+declare -i totseqwidth=$((1 + 2*seqwidth))
 git rev-list --reverse --objects $hhash --not $bhash \
-| tail -n +$((1 + $#chashes)) \
+| tail -n +$((1 + $nhashes)) \
 | while read x y; do
     if [[ -z $y ]]; then # this is a <tree-id> line
       local chash=$chashes[$x]
       local cmesg=$cmessages[$x]
-      print -f '# %s %s %s\n' ${x:0:8} ${chash:0:8} $cmesg
+      print -f "%*d/%*d %s %s %s\n" -- \
+        $seqwidth $(($nhashes - i++)) $seqwidth $nhashes \
+        ${x:0:8} ${chash:0:8} $cmesg
       continue
     fi
-    print -f '  %s %s\n' ${x:0:8} $y
+    print -f "%*s %s %s\n" $totseqwidth '' ${x:0:8} $y
   done
 
