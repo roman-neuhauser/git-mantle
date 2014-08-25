@@ -107,36 +107,43 @@ Examples
 Example output
 ==============
 
-::
+This example comes from `git-mantle`'s test suite.  The changes from `base`
+to `head` can be fetched from `repo`; the diffstat pertains to the whole
+range; the rest details individual commits.  ::
 
-  repo = git@github.com:roman-neuhauser/anarchinst.git
-  head = 6a91ccd3 readme-updates
-  base = c7303d75 master
+  repo = git@pub.example.org
+  head = ab984c9 rn/hack
+  base = 85b915e up/master
 
-  README.rest | 82 +++++++++++++++++++++++++++++------------------------
-  anarchinst  | 69 +++++++++++++++++++++++++++++++++++---------
-  2 files changed, 100 insertions(+), 51 deletions(-)
+   .gitignore | 1 +
+   README     | 2 +-
+   2 files changed, 2 insertions(+), 1 deletion(-)
 
-  * 9edb92da README, --help link to ArchLinux, Zsh
-    5e3722dd README.rest
-    caad946c anarchinst
-  * a3865ae6 --help updated from README
-    f0677ffe anarchinst
-  * e9ed45f0 --readme option based on HELP section
-    33ad3b72 anarchinst
-  * 03388a34 README generated with anarchinst --readme
-    33f981bb README.rest
-    fabbf7b1 anarchinst
-  * 02607989 README: SEE ALSO mentions zsh(1)
-    9b190496 README.rest
-    a4a76e32 anarchinst
-  * 79dd422f README updated
-    c30c57cc README.rest
-    f60962b8 anarchinst
-  * 8fb8340f README: s/quit/exit/ - standardese
-    73fd4609 README.rest
-    e41c75cb anarchinst
-  * 6a91ccd3 readme had a bug (it's $software, not $packages)
-    f961161c README.rest
-    d7ca90be anarchinst
+  # 76a23b86 043603cc README fancier
+    162441d0 README
+  # 87990615 ab984c9b ignore vim swapfiles
+    32682119 .gitignore
+
+Compare with output produced for the same data by `git-request-pull(1)`_::
+
+   The following changes since commit 85b915e100b621d1ec7783b6a9b8dc6b09233614:
+
+     README (2014-08-20 20:57:57 +0000)
+
+   are available in the git repository at:
+
+     ../public hack
+
+   for you to fetch changes up to ab984c9b99ffc420ceea6a8491f952275698d294:
+
+     ignore vim swapfiles (2014-08-20 20:57:57 +0000)
+
+   ----------------------------------------------------------------
+   git-mantle test suite (2):
+         README fancier
+         ignore vim swapfiles
+
+    .gitignore | 1 +
+    README     | 2 +-
+    2 files changed, 2 insertions(+), 1 deletion(-)
 
