@@ -34,6 +34,7 @@ base not found in upstream
 
   $ git push -q rn hack:feature
   $ git remote add -t master fu ../upstream
+  $ git fetch -q fu
   $ git mantle fu rn/feature
   fatal: ref refs/remotes/fu/HEAD is not a symbolic ref
   [128]
