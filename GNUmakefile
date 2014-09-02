@@ -14,13 +14,15 @@ INSTALL_DIR ?=    install -m 755 -d
 INSTALL_SCRIPT ?= install -m 755
 RST2HTML ?=       $(call first_in_path,rst2html.py rst2html)
 
-SHELL =           /usr/bin/zsh
+SHELL =           $(call first_in_path,zsh)
 name =            git-mantle
 
 installed =       $(name).1.gz $(name)
 artifacts =       $(installed) README.html
 
 sources =         git-mantle.zsh
+
+version =         $(shell git describe --always --first-parent --long)
 
 .DEFAULT_GOAL :=  most
 
@@ -48,14 +50,35 @@ install: $(installed)
 	$(INSTALL_SCRIPT) $(name) $(DESTDIR)$(BINDIR)/$(name)
 	$(INSTALL_DATA) $(name).1.gz $(DESTDIR)$(MAN1DIR)/$(name).1.gz
 
+.PHONY: tarball
+tarball: .git
+	git archive \
+	  --format tar.gz \
+	  --prefix $(name)-$(version)/ \
+	  --output $(name)-$(version).tar.gz \
+	  HEAD
 %.gz: %
-	$(GZIPCMD) -fkn $< $@
+	$(GZIPCMD) -cn $< | tee $@ >/dev/null
 
 %.html: %.rest
 	$(RST2HTML) --strict $< $@
 
 $(name): $(name).zsh
 	$(INSTALL_SCRIPT) $< $@
+
+$(name).spec: $(name).spec.in
+	version=$(version); pkgver=$${version#v}; \
+	sed -e "/^Version:/s/__VERSION__/$$pkgver/" \
+	    -e "/^Version:/s/-/./g" \
+	    -e "/^%define _upstreamver /s/__VERSION__/$$version/" \
+	    $< | tee $@ >/dev/null
+
+PKGBUILD: PKGBUILD.in
+	version=$(version); pkgver=$${version#v}; \
+	sed -e "/^pkgver=/s/__VERSION__/$$pkgver/" \
+	    -e "/^pkgver=/s/-/./g" \
+	    -e "/^_upstreamver=/s/__VERSION__/$$version/" \
+	    $< | tee $@ >/dev/null
 
 define first_in_path
   $(or \

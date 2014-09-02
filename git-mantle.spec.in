@@ -1,0 +1,40 @@
+# norootforbuild
+# Maintainer: Roman Neuhauser <neuhauser+git-mantle@sigpipe.cz>
+
+%define _upstreamver __VERSION__
+
+Name:           git-mantle
+Version:        __VERSION__
+Release:        0
+License:        MIT
+Summary:        Git pull requests with higher information density
+Url:            https://github.com/roman-neuhauser/%{name}
+Group:          Development/Tools/Version Control
+Source:         %{name}-%{_upstreamver}.tar.gz
+BuildRequires:  filesystem
+BuildArch:      noarch
+BuildRoot:      %_tmppath/%name-%version-build
+Requires:       %_sbindir/sendmail
+Requires:       zsh
+BuildRequires:  zsh
+
+%define gitmantle_make  make PREFIX=%{_prefix}
+%description
+Generate an overview of changes on a branch in the local repository
+and indicate where to pull them from.
+
+%prep
+%setup -qn %{name}-%{_upstreamver}
+
+%build
+%gitmantle_make
+
+%install
+%gitmantle_make install DESTDIR=%{buildroot}
+
+%files
+%defattr(-,root,root)
+%{_bindir}/git-mantle
+%{_mandir}/man1/git-mantle.1.gz
+
+%changelog

@@ -1,0 +1,26 @@
+# Maintainer: Roman Neuhauser <neuhauser+git-mantle@sigpipe.cz>
+pkgname=git-mantle
+pkgver=__VERSION__
+_upstreamver=__VERSION__
+pkgrel=1
+pkgdesc="Git pull requests with higher information density"
+arch=(any)
+url="https://github.com/roman-neuhauser/$pkgname"
+license=(MIT)
+depends=(git zsh)
+source=($pkgname-$_upstreamver.tar.gz)
+sha1sums=(SKIP)
+
+build() {
+  _make
+}
+
+package() {
+  _make install DESTDIR="$pkgdir/"
+}
+
+_make() {
+  cd "$srcdir/$pkgname-$_upstreamver"
+  make "$@"
+}
+

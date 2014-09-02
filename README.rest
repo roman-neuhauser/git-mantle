@@ -9,7 +9,7 @@
 -----------------------------------------------------------------------------
 
 :Author: Roman Neuhauser
-:Contact: neuhauser@sigpipe.cz
+:Contact: neuhauser+git-mantle@sigpipe.cz
 :Copyright: This document is in the public domain.
 
 .. this file is marked up using reStructuredText
