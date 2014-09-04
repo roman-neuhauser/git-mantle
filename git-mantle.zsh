@@ -111,7 +111,7 @@ git rev-list --reverse --objects $hhash --not $bhash \
       local chash=$chashes[$x]
       local cmesg=$cmessages[$x]
       print -f "%*d/%*d %s %s %s\n" -- \
-        $seqwidth $(($nhashes - i++)) $seqwidth $nhashes \
+        $seqwidth $((++i)) $seqwidth $nhashes \
         ${x:0:8} ${chash:0:8} $cmesg
       continue
     fi
