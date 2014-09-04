@@ -65,8 +65,8 @@ happy path
   $ git push -q rn hack:hack
   $ git mantle
   repo = git@pub.example.org
-  head = ab984c9 rn/hack
-  base = 85b915e up/master
+  head = ab984c9b99ffc420ceea6a8491f952275698d294 rn/hack
+  base = 85b915e100b621d1ec7783b6a9b8dc6b09233614 up/master
   
    .gitignore | 1 +
    README     | 2 +-

@@ -25,8 +25,8 @@ test
   $ git push -q rn HEAD:feature
   $ git mantle up/master rn/feature
   repo = git@pub.example.org
-  head = 2ab371a rn/feature
-  base = 85b915e up/master
+  head = 2ab371a4204e15ee16a75e9ae81cfc82a5714c07 rn/feature
+  base = 85b915e100b621d1ec7783b6a9b8dc6b09233614 up/master
   
    .gitignore | 1 +
    README     | 1 -

@@ -46,8 +46,8 @@ them for pull from `remote.rn.url`.
   $ git config --local mantle.upstream up/master
   $ git mantle rn/feature
   repo = git@pub.example.org
-  head = ab984c9 rn/feature
-  base = 85b915e up/master
+  head = ab984c9b99ffc420ceea6a8491f952275698d294 rn/feature
+  base = 85b915e100b621d1ec7783b6a9b8dc6b09233614 up/master
   
    .gitignore | 1 +
    README     | 2 +-

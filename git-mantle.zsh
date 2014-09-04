@@ -59,8 +59,8 @@ if [[ $head == */\* ]]; then
   head="$public/$(git symbolic-ref --short HEAD)"
 fi
 
-bhash="$(query-git '%h' $base -- || exit 1)"
-hhash="$(query-git '%h' $head -- || exit 1)"
+bhash="$(query-git '%H' $base -- || exit 1)"
+hhash="$(query-git '%H' $head -- || exit 1)"
 
 declare mbase="$(git merge-base $bhash $hhash)" \
 || complain $? "fatal: no commits in common between $base and $head"
