@@ -32,6 +32,8 @@ test
    README     | 1 -
    README.txt | 1 +
    3 files changed, 2 insertions(+), 1 deletion(-)
+   delete mode 100644 README
+   create mode 100644 README.txt
   
   1/3 76a23b86 043603cc README fancier
       162441d0 README
