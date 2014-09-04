@@ -35,11 +35,16 @@ export PATH="${TESTDIR%/*}:$PATH"
     echo more fancy > README
     git add README
     git commit -q -m 'README fancier'
+
     echo '.*.sw?' >> .gitignore
     git add .gitignore
     git commit -q -m 'ignore vim swapfiles'
 
-    git bundle create $TESTDIR/checkout.bundle master hack
+    git checkout -q -b rename
+    git mv README README.txt
+    git commit -q -m 'README is now README.txt'
+
+    git bundle create $TESTDIR/checkout.bundle master hack rename
     cd ..
     rm -rf coseed
   fi
@@ -55,7 +60,7 @@ export PATH="${TESTDIR%/*}:$PATH"
   cd checkout
   git remote add -m master -t master up ../upstream
   git fetch -q up
-  git fetch -q -u $TESTDIR/checkout.bundle master:master hack:hack
+  git fetch -q -u $TESTDIR/checkout.bundle master:master hack:hack rename:rename
 
   git remote rename origin rn
   git remote set-url rn git@pub.example.org

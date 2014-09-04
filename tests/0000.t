@@ -65,4 +65,3 @@ happy path
   2/2 87990615 ab984c9b ignore vim swapfiles
       32682119 .gitignore
 
-
