@@ -10,7 +10,7 @@ setup
 
   $ cd checkout
   $ git config --local mantle.upstream up/master
-  $ git config --local mantle.public rn/\*
+  $ git config --local mantle.public rn
   $ git checkout -q hack
   $ git push -q rn hack:feature
 

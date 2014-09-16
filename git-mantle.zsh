@@ -49,13 +49,15 @@ if [[ -z $base || -z $head ]]; then
   exit 1
 fi
 
-public=${head%%/*}
+public=${${head%%/*}:-origin}
 
 if [[ $base != */* ]]; then
   base="$(git symbolic-ref --short refs/remotes/$base/HEAD)"
 fi
 
-if [[ $head == */\* ]]; then
+if [[ -z $head ]]; then
+  head="$public/$(git symbolic-ref --short HEAD)"
+elif [[ $head != */* ]]; then
   head="$public/$(git symbolic-ref --short HEAD)"
 fi
 

@@ -16,7 +16,7 @@ test
 ****
 
   $ git config --local mantle.upstream up/master
-  $ git config --local mantle.public lol/\*
+  $ git config --local mantle.public lol
   $ git mantle
   fatal: bad revision 'lol/hack'
   [1]
