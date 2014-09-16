@@ -63,7 +63,7 @@ Configuration
 
 * `mantle.upstream`
 
-  "Refname" for the target branch.  Defaults to `upstream/master`.
+  "Refname" for the target branch.  Defaults to `upstream`.
 
 * `mantle.public`
 
