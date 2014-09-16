@@ -91,7 +91,7 @@ print -f 'base = %s %s\n' $bhash $base
 
 if [[ -n $do_stat ]]; then
   print
-  git diff --summary $do_stat $hhash --not $mbase
+  git diff-tree --summary $do_stat $hhash --not $mbase
   print
 fi
 
