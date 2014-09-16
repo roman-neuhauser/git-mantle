@@ -12,17 +12,17 @@ setup
 
   $ git config --get mantle.upstream
   [1]
-
   $ git config --get mantle.public
   [1]
+
+  $ git checkout -q rename
+  $ git push -q rn HEAD:feature
 
 test
 ****
 
 ::
 
-  $ git checkout -q rename
-  $ git push -q rn HEAD:feature
   $ git mantle up/master rn/feature
   repo = git@pub.example.org
   head = 2ab371a4204e15ee16a75e9ae81cfc82a5714c07 rn/feature
