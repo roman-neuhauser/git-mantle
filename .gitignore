@@ -2,4 +2,6 @@
 .*.sw?
 *.gz
 *.html
+/PKGBUILD
 /git-mantle
+/git-mantle.spec
