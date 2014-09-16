@@ -22,5 +22,5 @@ test
   $ git config --get mantle.public
   [1]
   $ git mantle
-  usage: git-mantle [options] [[base] head]
+  fatal: ref refs/remotes/upstream/HEAD is not a symbolic ref
   [1]

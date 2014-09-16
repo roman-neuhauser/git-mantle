@@ -31,38 +31,58 @@ if [[ -n $output ]]; then
   exec > $output
 fi
 
-declare base head public
+declare base head upstream public
 
-if [[ $# -eq 0 ]]; then
-  base="$(git config mantle.upstream || :)"
-  head="$(git config mantle.public || :)"
-elif [[ $# -eq 1 ]]; then
-  base="$(git config mantle.upstream || :)"
-  head=$1
+mantle_upstream="$(git config mantle.upstream || :)"
+mantle_upstream=${mantle_upstream:-upstream}
+upstream=${mantle_upstream%%/*}
+if [[ $mantle_upstream == ?*/?* ]]; then
+  base=${mantle_upstream##*/}
 else
-  base=$1
-  head=$2
+  base=HEAD
 fi
 
-if [[ -z $base || -z $head ]]; then
-  print -f 'usage: %s [options] [[base] head]\n' ${0##*/} >&2
-  exit 1
+mantle_public="$(git config mantle.public || :)"
+mantle_public=${mantle_public:-origin}
+public=${mantle_public%%/*}
+if [[ $mantle_public == ?*/?* ]]; then
+  head=${mantle_public##*/}
+else
+  head=HEAD
 fi
 
-public=${${head%%/*}:-origin}
-
-if [[ $base != */* ]]; then
-  base="$(git symbolic-ref --short refs/remotes/$base/HEAD)"
+if (( $# > 1 )); then
+  # slashless `base` is a *remote* name
+  upstream=$1
+  if [[ $upstream == ?*/?* ]]; then
+    base=${upstream##*/}
+    upstream=${upstream%%/*}
+  fi
+  shift
+fi
+if (( $# > 0 )); then
+  # slashless `head` is a *branch* name
+  head=$1
+  if [[ $head == ?*/?* ]]; then
+    public=${head%%/*}
+    head=${head##*/}
+  fi
 fi
 
-if [[ -z $head ]]; then
-  head="$public/$(git symbolic-ref --short HEAD)"
-elif [[ $head != */* ]]; then
-  head="$public/$(git symbolic-ref --short HEAD)"
+if [[ $base == HEAD ]]; then
+  base=${${:-$(git symbolic-ref --short refs/remotes/$upstream/HEAD)}##*/} || exit 1
+fi
+if [[ $head == HEAD ]]; then
+  head=$(git symbolic-ref --short $head)
 fi
 
-bhash="$(query-git '%H' $base -- || exit 1)"
-hhash="$(query-git '%H' $head -- || exit 1)"
+declare bspec=$upstream/$base
+declare hspec=$public/$head
+
+declare bhash hhash
+
+bhash="$(query-git '%H' $bspec -- || exit 1)"
+hhash="$(query-git '%H' $hspec -- || exit 1)"
 
 declare mbase="$(git merge-base $bhash $hhash)" \
 || complain $? "fatal: no commits in common between $base and $head"
@@ -81,15 +101,15 @@ git rev-list --format='%T %H %s' $hhash --not $bhash \
     cmessages+=($x $z)
   done
 
-(( $#chashes )) || complain 1 "fatal: '$base..$head' is an empty range"
+(( $#chashes )) || complain 1 "fatal: '$bspec..$hspec' is an empty range"
 
 # repo = git@github.com:roman-neuhauser/anarchinst.git
 # head = 6a91ccd3 readme-updates
 # base = c7303d75 master
 #
 print -f 'repo = %s\n' $purl
-print -f 'head = %s %s\n' $hhash $head
-print -f 'base = %s %s\n' $bhash $base
+print -f 'head = %s %s\n' $hhash $hspec
+print -f 'base = %s %s\n' $bhash $bspec
 
 if [[ -n $do_stat ]]; then
   print

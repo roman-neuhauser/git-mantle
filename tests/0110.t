@@ -26,4 +26,4 @@ test
 
   $ git mantle fu rn/feature
   fatal: ref refs/remotes/fu/HEAD is not a symbolic ref
-  [128]
+  [1]
