@@ -56,10 +56,9 @@ Synopsis
 Configuration
 =============
 
-* `mantle.publicurl`, `remote.<name>.url`
+* `remote.<name>.url`
 
-  URL used in the output to suggest pulling from.  If `mantle.publicurl`
-  does not exist, `remote.<name>.url` is used.
+  URL used in the output to suggest pulling from.
 
 * `mantle.upstream`
 

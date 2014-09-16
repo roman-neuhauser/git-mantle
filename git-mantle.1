@@ -47,13 +47,8 @@ it's taken for a remote name and its default branch is used.
 .\" CONFIGURATION {{{
 .Sh CONFIGURATION
 .Bl -tag -width x
-.It Li mantle.publicurl , remote.<name>.url
+.It Li remote.<name>.url
 URL used in the output to suggest pulling from.
-If
-.Li mantle.publicurl
-does not exist,
-.Li remote.<name>.url
-is used.
 .It Li mantle.upstream
 "Refname" for the target branch.
 Defaults to
@@ -92,7 +87,7 @@ Summarize the changes from
 to
 .Li rn/feature ,
 offering them for pull from
-.Li mantle.publicurl .
+.Li remote.rn.url .
 .
 .It Li % git mantle upstream rn/feature
 Summarize the changes from
@@ -100,7 +95,7 @@ Summarize the changes from
 to
 .Li rn/feature ,
 offering them for pull from
-.Li mantle.publicurl .
+.Li remote.rn.url .
 .
 .It Li % git mantle rn/feature
 Summarize the changes from
@@ -108,7 +103,7 @@ Summarize the changes from
 to
 .Li rn/feature ,
 offering them for pull from
-.Li mantle.publicurl .
+.Li remote.rn.url .
 .
 .It Li % git mantle
 Summarize the changes from
