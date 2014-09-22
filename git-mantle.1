@@ -8,7 +8,7 @@
 .
 .Sh NAME
 .Nm git-mantle
-.Nd Git pull requests with higher information density
+.Nd Generate an overview of changes on a branch
 .\" FRONT MATTER }}}
 .
 .\" SYNOPSIS {{{
@@ -24,39 +24,62 @@
 .
 .\" DESCRIPTION {{{
 .Sh DESCRIPTION
-Generate an overview of changes on a branch in the local repository
-and indicate where to pull them from.
-.Pp
-.Nm
-is similar to, yet different from,
-.Xr git-request-pull 1 .
-.Pp
+Generate an overview of changes on a branch.
+The output summarizes changes from
+.Ar BASE
+to
+.Ar HEAD
+and suggests where to pull them from.
+.
 .Bl -tag -width x
 .It Ar BASE
-"Refname" for the commit to start.
-It should be the name of a remote-tracking branch, like
+"Refname" to start from.
+It should be a remote-tracking branch, like
 .Li upstream/stable .
 If
 .Ar BASE
-contains no slash,
+contains a slash it's used as-is, otherwise
 it's taken for a remote name and its default branch is used.
+If
+.Ar BASE
+is omitted, the value of
+.Va mantle.upstream
+is used.
 .It Ar HEAD
 "Refname" for the top-most commit included in the request.
+If
+.Ar HEAD
+contains a slash it's used as-is.
+Otherwise, if
+.Ar HEAD
+is
+.Qq Li HEAD
+it's resolved to a branch name and qualified with the value of
+.Va mantle.public .
+Othersise, it's taken for a bare branch name and qualified with
+the value of
+.Va mantle.public .
+If
+.Ar HEAD
+is omitted it's treated as if it was
+.Qq Li HEAD .
 .El
 .\" DESCRIPTION }}}
 .\" CONFIGURATION {{{
 .Sh CONFIGURATION
 .Bl -tag -width x
-.It Li remote.<name>.url
-URL used in the output to suggest pulling from.
 .It Li mantle.upstream
-"Refname" for the target branch.
+Default
+.Ar BASE .
 Defaults to
-.Li upstream .
+.Qq Li upstream .
 .It Li mantle.public
-Name of the remote to offer changes from.
+Default remote to qualify
+.Ar HEAD .
 Defaults to
-.Li origin .
+.Qa Li origin .
+.It Li remote.${mantle.public}.url
+URL used in the output to suggest pulling from.
 .El
 .\" CONFIGURATION }}}
 .\" .Sh IMPLEMENTATION NOTES
@@ -80,6 +103,13 @@ possibly others.
 .\" FILES }}}
 .\" EXAMPLES {{{
 .Sh EXAMPLES
+These example assume a repository with these settings in place:
+.Bd -literal
+% git remote add -m master upstream ...
+% git remote add -m master rn ...
+% git config mantle.upstream upstream
+% git config mantle.public rn
+.Ed
 .Bl -tag -width x
 .It Li % git mantle upstream/master rn/feature
 Summarize the changes from

@@ -5,7 +5,7 @@
                                  git-mantle
 =============================================================================
 -----------------------------------------------------------------------------
-              Git pull requests with higher information density
+                 Generate an overview of changes on a branch
 -----------------------------------------------------------------------------
 
 :Author: Roman Neuhauser
@@ -22,11 +22,6 @@
 
 Introduction
 ============
-
-Generate an overview of changes on a branch in the local repository and
-indicate where to pull them from.
-
-`git-mantle` is similar to, yet different from, `git-request-pull(1)`_.
 
 Pull requests are often sent repeatedly: Alice clones Bob's repository,
 commits some changes and sends him a pull request.  Bob reviews the
@@ -46,30 +41,59 @@ and for each submitted commit, the `<blob-id>` of each affected file.
 .. _`git-request-pull(1)`: http://git-scm.com/docs/git-request-pull
 .. _`git-pimp`: https://github.com/roman-neuhauser/git-pimp
 
+
 Synopsis
 ========
 
 ::
 
-  git mantle [--output FILE] [diffstat-opts] [[upstream] public]
+  git mantle [--output FILE] [diffstat-opts] [[BASE] HEAD]
+
+
+Description
+===========
+
+Generate an overview of changes on a branch.
+The output summarizes changes from `BASE` to `HEAD` and suggests where to
+pull them from.
+
+`BASE`
+  *Refname* to start from.  It should be a remote-tracking branch, like
+  "upstream/stable".  If `BASE` contains a slash it's used as-is, otherwise
+  it's taken for a remote name and its default branch is used.
+  If `BASE` is omitted, the value of `mantle.upstream` is used.
+
+`HEAD`
+  *Refname* for the top-most commit included in the request.  If `HEAD`
+  contains a slash it's used as-is.  Otherwise, if `HEAD` is "HEAD" it's
+  resolved to a branch name and qualified with the value of `mantle.public`.
+  Otherwise, it's taken for a bare branch name and qualified with the value
+  of `mantle.public`.
+  If `HEAD` is omitted it's treated as if it was "HEAD".
+
 
 Configuration
 =============
 
-* `remote.<name>.url`
+`mantle.upstream`
+  Default `BASE`.  Defaults to "`upstream`".
 
-  URL used in the output to suggest pulling from.
+`mantle.public`
+  Default remote to qualify `HEAD`.  Defaults to "`origin`".
 
-* `mantle.upstream`
+`remote.${mantle.public}.url`
+  URL used in the output to suggest where to pull from.
 
-  "Refname" for the target branch.  Defaults to `upstream`.
-
-* `mantle.public`
-
-  Name of the remote to offer changes from.  Defaults to `origin`.
 
 Examples
 ========
+
+These examples assume a repository with these settings in place::
+
+  git remote add -m master upstream ...
+  git remote add -m master rn ...
+  git config mantle.upstream upstream
+  git config mantle.public rn
 
 * ::
 
@@ -102,6 +126,7 @@ Examples
   the active branch: if the active branch has an upstream branch configured
   (in `mantle.public`), that branch is used.  If there's no upstream branch
   configured, a branch eponymous with the active branch is used.
+
 
 Example output
 ==============
