@@ -58,17 +58,18 @@ The output summarizes changes from `BASE` to `HEAD` and suggests where to
 pull them from.
 
 `BASE`
-  *Refname* to start from.  It should be a remote-tracking branch, like
-  "upstream/stable".  If `BASE` contains a slash it's used as-is, otherwise
-  it's taken for a remote name and its default branch is used.
+  *Refname* to start from.  It can be a remote-tracking branch like
+  "`upstream/stable`", or a local branch name if it's prefixed with "./",
+  or a remote name, in which case its default branch is used.
   If `BASE` is omitted, the value of `mantle.upstream` is used.
 
 `HEAD`
-  *Refname* for the top-most commit included in the request.  If `HEAD`
-  contains a slash it's used as-is.  Otherwise, if `HEAD` is "HEAD" it's
-  resolved to a branch name and qualified with the value of `mantle.public`.
-  Otherwise, it's taken for a bare branch name and qualified with the value
-  of `mantle.public`.
+  *Refname* for the top-most commit included in the request.
+  It can be a remote tracking branch like "`rn/feature`", or a local branch
+  name if it's prefixed with "./", or a bare branch name which is then
+  qualified with the value of `mantle.public`.
+  If `HEAD` is "HEAD" it's resolved to a branch name and qualified
+  with the value of `mantle.public`.
   If `HEAD` is omitted it's treated as if it was "HEAD".
 
 

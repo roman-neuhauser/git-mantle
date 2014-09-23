@@ -34,12 +34,11 @@ and suggests where to pull them from.
 .Bl -tag -width x
 .It Ar BASE
 "Refname" to start from.
-It should be a remote-tracking branch, like
-.Li upstream/stable .
-If
-.Ar BASE
-contains a slash it's used as-is, otherwise
-it's taken for a remote name and its default branch is used.
+It can be a remote-tracking branch, like
+.Qq Li upstream/stable ,
+or a local branch name if it's prefixed with
+.Qq Li ./ ,
+or a remote name, in which case its default branch is used.
 If
 .Ar BASE
 is omitted, the value of
@@ -47,17 +46,16 @@ is omitted, the value of
 is used.
 .It Ar HEAD
 "Refname" for the top-most commit included in the request.
+It can be a remote tracking branch, like
+.Qq Li rn/feature ,
+or a local branch name if it's prefixed with
+.Qq Li ./ ,
+or a bare branch name which is then qualified with the value of
+.Va mantle.public .
 If
-.Ar HEAD
-contains a slash it's used as-is.
-Otherwise, if
-.Ar HEAD
-is
+.Ar HEAD is
 .Qq Li HEAD
 it's resolved to a branch name and qualified with the value of
-.Va mantle.public .
-Othersise, it's taken for a bare branch name and qualified with
-the value of
 .Va mantle.public .
 If
 .Ar HEAD

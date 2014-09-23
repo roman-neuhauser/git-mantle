@@ -71,3 +71,7 @@ export PATH="${TESTDIR%/*}:$PATH"
   exit 11
 }
 
+function headeronly
+{
+  sed -n '0,/^$/ { /^$/q; p; }'
+}

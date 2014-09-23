@@ -78,6 +78,8 @@ fi
 
 declare bspec=$upstream/$base
 declare hspec=$public/$head
+bspec=${bspec#./}
+hspec=${hspec#./}
 
 declare bhash hhash
 
@@ -88,6 +90,7 @@ declare mbase="$(git merge-base $bhash $hhash)" \
 || complain $? "fatal: no commits in common between $base and $head"
 
 declare purl="$(git config --get remote.$public.url)"
+[[ -z $purl ]] && purl='?'
 
 declare -A chashes cmessages
 
