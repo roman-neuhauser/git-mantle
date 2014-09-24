@@ -7,7 +7,7 @@ Name:           git-mantle
 Version:        __VERSION__
 Release:        0
 License:        MIT
-Summary:        Git pull requests with higher information density
+Summary:        Generate an overview of changes on a branch
 Url:            https://github.com/roman-neuhauser/%{name}
 Group:          Development/Tools/Version Control
 Source:         %{name}-%{_upstreamver}.tar.gz
@@ -20,8 +20,7 @@ BuildRequires:  zsh
 
 %define gitmantle_make  make PREFIX=%{_prefix}
 %description
-Generate an overview of changes on a branch in the local repository
-and indicate where to pull them from.
+Generate an overview of changes on a branch.
 
 %prep
 %setup -qn %{name}-%{_upstreamver}
