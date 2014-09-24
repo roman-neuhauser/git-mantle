@@ -1,8 +1,6 @@
 # norootforbuild
 # Maintainer: Roman Neuhauser <neuhauser+git-mantle@sigpipe.cz>
 
-%define _upstreamver __VERSION__
-
 Name:           git-mantle
 Version:        __VERSION__
 Release:        0
@@ -10,7 +8,7 @@ License:        MIT
 Summary:        Generate an overview of changes on a branch
 Url:            https://github.com/roman-neuhauser/%{name}
 Group:          Development/Tools/Version Control
-Source:         %{name}-%{_upstreamver}.tar.gz
+Source:         %{name}-%{version}.tar.gz
 BuildRequires:  filesystem
 BuildArch:      noarch
 BuildRoot:      %_tmppath/%name-%version-build
@@ -23,7 +21,7 @@ BuildRequires:  zsh
 Generate an overview of changes on a branch.
 
 %prep
-%setup -qn %{name}-%{_upstreamver}
+%setup -qn %{name}-%{version}
 
 %build
 %gitmantle_make

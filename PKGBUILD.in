@@ -1,14 +1,13 @@
 # Maintainer: Roman Neuhauser <neuhauser+git-mantle@sigpipe.cz>
 pkgname=git-mantle
 pkgver=__VERSION__
-_upstreamver=__VERSION__
 pkgrel=1
 pkgdesc="Generate an overview of changes on a branch"
 arch=(any)
 url="https://github.com/roman-neuhauser/$pkgname"
 license=(MIT)
 depends=(git zsh)
-source=($pkgname-$_upstreamver.tar.gz)
+source=($pkgname-$pkgver.tar.gz)
 sha1sums=(SKIP)
 
 build() {
@@ -20,7 +19,7 @@ package() {
 }
 
 _make() {
-  cd "$srcdir/$pkgname-$_upstreamver"
+  cd "$srcdir/$pkgname-$pkgver"
   make "$@"
 }
 
