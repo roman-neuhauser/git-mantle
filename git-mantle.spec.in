@@ -21,7 +21,7 @@ BuildRequires:  zsh
 Generate an overview of changes on a branch.
 
 %prep
-%setup -qn %{name}-%{version}
+%setup -q
 
 %build
 %gitmantle_make
