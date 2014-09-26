@@ -89,22 +89,45 @@ hhash="$(query-git '%H' $hspec -- || exit 1)"
 declare mbase="$(git merge-base $bhash $hhash)" \
 || complain $? "fatal: no commits in common between $base and $head"
 
+declare -i nhashes="$(git rev-list --count $hhash --not $bhash)"
+
+(( $nhashes )) || complain 1 "fatal: '$bspec..$hspec' is an empty range"
+
 declare purl="$(git config --get remote.$public.url)"
 [[ -z $purl ]] && purl='?'
 
-declare -A chashes cmessages
-
+declare -A cmessages
+declare -a cids
 # git-rev-list --format (or --pretty) prepends each commit
 # with "commit %H\n".  it's easier to parse if we throw away
 # this %H instance and request another one in the format string.
-git rev-list --format='%T %H %s' $hhash --not $bhash \
+git rev-list --reverse --format='%T %H %s' $hhash --not $bhash \
 | while read x y z; do
     [[ $x == commit ]] && continue
-    chashes+=($x $y)
+    cids+=($x $y)
     cmessages+=($x $z)
   done
 
-(( $#chashes )) || complain 1 "fatal: '$bspec..$hspec' is an empty range"
+# git rev-list --objects has the same output as without --objects,
+# followed by, for each commit:
+#   <tree-id> SP LF
+#   <blob-id> SP <path> LF
+#   ...
+# we skip the initial run of lines that just list the <commit-id>s
+declare -i i=0
+declare -i seqwidth=$#nhashes
+declare -i totseqwidth=$((1 + 2*seqwidth))
+declare pth tid xid
+declare -a objects
+git rev-list --reverse --objects $hhash --not $bhash \
+| tail -n +$((1 + $nhashes)) \
+| while read xid pth; do   # xid is either a <tree-id> or <object-id>
+    if [[ -z $pth ]]; then # this is a <tree-id> line
+      tid=$xid
+    else
+      objects+=($tid $xid $pth)
+    fi
+  done
 
 # repo = git@github.com:roman-neuhauser/anarchinst.git
 # head = 6a91ccd3 readme-updates
@@ -120,26 +143,13 @@ if [[ -n $do_stat ]]; then
   print
 fi
 
-# git rev-list --objects has the same output as without --objects,
-# followed by, for each commit:
-#   <tree-id> SP LF
-#   <blob-id> SP <path> LF
-#   ...
-# we skip the initial run of lines that just list the <commit-id>s
-declare -i i=0 nhashes=$#chashes
-declare -i seqwidth=$#nhashes
-declare -i totseqwidth=$((1 + 2*seqwidth))
-git rev-list --reverse --objects $hhash --not $bhash \
-| tail -n +$((1 + $nhashes)) \
-| while read xid pth; do   # xid is either a <tree-id> or <object-id>
-    if [[ -z $pth ]]; then # this is a <tree-id> line
-      local chash=$chashes[$xid]
-      local cmesg=$cmessages[$xid]
-      print -f "%*d/%*d %s %s %s\n" -- \
-        $seqwidth $((++i)) $seqwidth $nhashes \
-        ${xid:0:8} ${chash:0:8} $cmesg
-      continue
-    fi
-    print -f "%*s %s %s\n" $totseqwidth '' ${xid:0:8} $pth
+declare _tid oid
+for tid cid in $cids; do
+  print -f "%*d/%*d %s %s %s\n" -- \
+    $seqwidth $((++i)) $seqwidth $nhashes \
+    ${tid:0:8} ${cid:0:8} $cmessages[$tid]
+  for _tid oid pth in $objects; do
+    [[ $_tid == $tid ]] || continue
+    print -f "%*s %s %s\n" $totseqwidth '' ${oid:0:8} $pth
   done
-
+done
