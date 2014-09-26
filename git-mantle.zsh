@@ -131,15 +131,15 @@ declare -i seqwidth=$#nhashes
 declare -i totseqwidth=$((1 + 2*seqwidth))
 git rev-list --reverse --objects $hhash --not $bhash \
 | tail -n +$((1 + $nhashes)) \
-| while read x y; do
-    if [[ -z $y ]]; then # this is a <tree-id> line
-      local chash=$chashes[$x]
-      local cmesg=$cmessages[$x]
+| while read xid pth; do   # xid is either a <tree-id> or <object-id>
+    if [[ -z $pth ]]; then # this is a <tree-id> line
+      local chash=$chashes[$xid]
+      local cmesg=$cmessages[$xid]
       print -f "%*d/%*d %s %s %s\n" -- \
         $seqwidth $((++i)) $seqwidth $nhashes \
-        ${x:0:8} ${chash:0:8} $cmesg
+        ${xid:0:8} ${chash:0:8} $cmesg
       continue
     fi
-    print -f "%*s %s %s\n" $totseqwidth '' ${x:0:8} $y
+    print -f "%*s %s %s\n" $totseqwidth '' ${xid:0:8} $pth
   done
 
