@@ -121,7 +121,7 @@ for tid cid pid in $parents; do
       print $meta | read srcperms dstperms srchash dsthash mode
       objpath=$srcpath
       if [[ -n $dstpath ]]; then
-        continue
+        objpath+=" -> $dstpath"
       fi
       objects+=($tid $dsthash $objpath)
     done

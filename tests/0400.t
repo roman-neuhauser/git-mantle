@@ -1,5 +1,5 @@
-diffstat-related behaviors
-==========================
+renamed file
+============
 
 setup
 *****
@@ -40,3 +40,4 @@ test
   2/3 87990615 ab984c9b ignore vim swapfiles
       32682119 .gitignore
   3/3 2c842d2d 2ab371a4 README is now README.txt
+      162441d0 README -> README.txt
