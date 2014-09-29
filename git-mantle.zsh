@@ -98,36 +98,34 @@ declare purl="$(git config --get remote.$public.url)"
 
 declare -A cmessages
 declare -a cids
+declare -a parents
 # git-rev-list --format (or --pretty) prepends each commit
-# with "commit %H\n".  it's easier to parse if we throw away
-# this %H instance and request another one in the format string.
-git rev-list --reverse --format='%T %H %s' $hhash --not $bhash \
-| while read x y z; do
-    [[ $x == commit ]] && continue
-    cids+=($x $y)
-    cmessages+=($x $z)
+# with "commit %H\n" so there's no need to request %H again
+git rev-list --reverse --format='tree %T%nparent %P%ntitle %s' $hhash --not $bhash \
+| while read k v; do
+    case $k in
+    commit) cid=$v ;;
+    tree)   tid=$v; cids+=($tid $cid) ;;
+    parent) parents+=($tid $cid $v) ;;
+    title)  cmessages+=($tid $v) ;;
+    esac
   done
 
-# git rev-list --objects has the same output as without --objects,
-# followed by, for each commit:
-#   <tree-id> SP LF
-#   <blob-id> SP <path> LF
-#   ...
-# we skip the initial run of lines that just list the <commit-id>s
 declare -i i=0
 declare -i seqwidth=$#nhashes
 declare -i totseqwidth=$((1 + 2*seqwidth))
-declare pth tid xid
 declare -a objects
-git rev-list --reverse --objects $hhash --not $bhash \
-| tail -n +$((1 + $nhashes)) \
-| while read xid pth; do   # xid is either a <tree-id> or <object-id>
-    if [[ -z $pth ]]; then # this is a <tree-id> line
-      tid=$xid
-    else
-      objects+=($tid $xid $pth)
-    fi
-  done
+for tid cid pid in $parents; do
+  git diff-tree --find-renames -r $pid $cid \
+  | while IFS='	' read meta srcpath dstpath; do
+      print $meta | read srcperms dstperms srchash dsthash mode
+      objpath=$srcpath
+      if [[ -n $dstpath ]]; then
+        continue
+      fi
+      objects+=($tid $dsthash $objpath)
+    done
+done
 
 # repo = git@github.com:roman-neuhauser/anarchinst.git
 # head = 6a91ccd3 readme-updates
@@ -143,7 +141,6 @@ if [[ -n $do_stat ]]; then
   print
 fi
 
-declare _tid oid
 for tid cid in $cids; do
   print -f "%*d/%*d %s %s %s\n" -- \
     $seqwidth $((++i)) $seqwidth $nhashes \
