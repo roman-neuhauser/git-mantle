@@ -6,7 +6,7 @@ MANDIR ?=         $(PREFIX)/share/man
 MAN1DIR ?=        $(MANDIR)/man1
 
 CRAMCMD =         cram
-CRAM =
+CRAM =            --shell $(SHELL)
 export CRAM
 
 GZIPCMD ?=        gzip
