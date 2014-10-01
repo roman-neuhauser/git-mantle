@@ -5,8 +5,9 @@ BINDIR ?=         $(PREFIX)/bin
 MANDIR ?=         $(PREFIX)/share/man
 MAN1DIR ?=        $(MANDIR)/man1
 
-CRAM =            cram
-CRAM_OPTIONS =
+CRAMCMD =         cram
+CRAM =
+export CRAM
 
 GZIPCMD ?=        gzip
 INSTALL_DATA ?=   install -m 644
@@ -38,7 +39,7 @@ clean:
 
 .PHONY: check
 check: all
-	$(CRAM) $(CRAM_OPTIONS) tests
+	$(CRAMCMD) tests
 
 .PHONY: html
 html: README.html
