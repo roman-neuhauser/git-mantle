@@ -6,14 +6,30 @@ setup
 
 ::
 
-  $ . $TESTDIR/tools.sh
+  $ . $TESTDIR/setup
 
+  $ init-repos
   $ cd checkout
 
   $ git config --get mantle.upstream
   [1]
   $ git config --get mantle.public
   [1]
+
+  $ touch .gitignore
+  $ tit commit -m 'init'
+
+  $ echo fancy > README
+  $ tit commit -m 'README'
+  $ tit push up HEAD:master
+
+  $ tit checkout -b hack
+
+  $ echo more fancy > README
+  $ tit commit -m 'README fancier'
+
+  $ echo '.*.sw?' > .gitignore
+  $ tit commit -m 'ignore vim swapfiles'
 
 test
 ****
@@ -22,5 +38,5 @@ test
 
   $ git mantle ./master ./hack | headeronly
   repo = ?
-  head = ab984c9b99ffc420ceea6a8491f952275698d294 hack
-  base = 85b915e100b621d1ec7783b6a9b8dc6b09233614 master
+  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a hack
+  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 master

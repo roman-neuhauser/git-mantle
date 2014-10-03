@@ -6,17 +6,27 @@ setup
 
 ::
 
-  $ . $TESTDIR/tools.sh
+  $ . $TESTDIR/setup
 
+  $ init-repos
   $ cd checkout
-  $ git checkout -q -b add-script master
+
+  $ touch .gitignore
+  $ tit commit -m 'init'
+  $ tit push up HEAD:master
+
+  $ echo fancy > README
+  $ tit commit -m 'README'
+  $ tit push rn HEAD:master
+
+  $ tit checkout -b add-script HEAD~1
 
   $ echo script > script
-  $ git add script
-  $ git commit -q -m 'added an awesome script'
-  $ git checkout -q hack
-  $ git merge -q add-script
-  $ git push -q rn hack:feature
+  $ tit commit -m 'script'
+
+  $ tit checkout master
+  $ tit merge add-script
+  $ tit push rn HEAD:feature
 
 
 test

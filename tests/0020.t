@@ -6,8 +6,9 @@ setup
 
 ::
 
-  $ . $TESTDIR/tools.sh
+  $ . $TESTDIR/setup
 
+  $ init-repos
   $ cd checkout
 
   $ git config --get mantle.upstream
@@ -15,8 +16,13 @@ setup
   $ git config --get mantle.public
   [1]
 
-  $ git push -q rn hack:feature
+  $ echo foo > foo
+  $ tit commit -m 'added foo'
+  $ tit push up HEAD:master
 
+  $ echo bar > bar
+  $ tit commit -m 'added bar'
+  $ tit push rn HEAD:feature
 
 test
 ****

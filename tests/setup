@@ -1,0 +1,59 @@
+# vim: ft=zsh sw=2 sts=2 et fdm=marker cms=\ #\ %s
+
+export GIT_PAGER=cat
+export GIT_EDITOR=false
+export GIT_SSH=false
+export GIT_ASKPASS=false
+export GIT_CONFIG_NOSYSTEM=1
+export HOME="$TESTDIR"
+export XDG_CONFIG_HOME="$TESTDIR"
+export PATH="${TESTDIR%/*}:$PATH"
+
+function tit # {{{
+{
+  case $1 in
+  commit)
+    next=tit-$1
+    shift
+  ;;
+  checkout | merge | push)
+    next=git
+    local cmd=$1
+    shift
+    set - $cmd -q "$@"
+  ;;
+  *)
+    next=git
+  ;;
+  esac
+  $next "$@"
+} # }}}
+
+function tit-commit # {{{
+{
+  local _d="${d:-2014-08-20T20:57:57}"
+  git add -A
+  env \
+    GIT_COMMITTER_DATE=$_d \
+    GIT_AUTHOR_DATE=$_d \
+    git commit -q "$@"
+} # }}}
+
+function init-repos # {{{
+(
+  git init -q --bare theirs
+  git init -q --bare mine
+  git init -q checkout
+
+  cd checkout
+
+  git remote add -m master up ../theirs
+  git remote add -m master rn ../mine
+  git remote set-url rn git@pub.example.org
+  git remote set-url --push rn ../mine
+) # }}}
+
+function headeronly # {{{
+{
+  sed -n '0,/^$/ { /^$/q; p; }'
+} # }}}

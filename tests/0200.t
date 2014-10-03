@@ -6,11 +6,17 @@ setup
 
 ::
 
-  $ . $TESTDIR/tools.sh
+  $ . $TESTDIR/setup
 
+  $ init-repos
   $ cd checkout
-  $ git push -q rn hack:feature
 
+  $ touch .gitignore
+  $ tit commit -m 'init'
+
+  $ echo fancy > README
+  $ tit commit -m 'README'
+  $ tit push up HEAD:feature
 
 test
 ****

@@ -6,10 +6,10 @@ setup
 
 ::
 
-  $ . $TESTDIR/tools.sh
+  $ . $TESTDIR/setup
 
+  $ init-repos
   $ cd checkout
-  $ git checkout -q hack
 
 
 test
@@ -18,7 +18,6 @@ test
 ::
 
   $ git config --local mantle.upstream omg/wtf
-  $ git config --local mantle.public rn/\*
   $ git mantle
   fatal: bad revision 'omg/wtf'
   [1]

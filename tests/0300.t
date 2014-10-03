@@ -6,10 +6,10 @@ setup
 
 ::
 
-  $ . $TESTDIR/tools.sh
+  $ . $TESTDIR/setup
 
+  $ init-repos
   $ cd checkout
-  $ git checkout -q hack
 
 
 test

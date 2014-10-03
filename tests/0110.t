@@ -6,17 +6,22 @@ setup
 
 ::
 
-  $ . $TESTDIR/tools.sh
+  $ . $TESTDIR/setup
 
+  $ init-repos
   $ cd checkout
 
   $ git config --get mantle.upstream
   [1]
   $ git config --get mantle.public
   [1]
-  $ git push -q rn hack:feature
-  $ git remote add -t master fu ../upstream
-  $ git fetch -q fu
+
+  $ touch .gitignore
+  $ tit commit -m 'init'
+
+  $ echo fancy > README
+  $ tit commit -m 'README'
+  $ tit push rn HEAD:feature
 
 
 test

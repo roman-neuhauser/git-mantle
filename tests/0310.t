@@ -6,10 +6,18 @@ setup
 
 ::
 
-  $ . $TESTDIR/tools.sh
+  $ . $TESTDIR/setup
 
+  $ init-repos
   $ cd checkout
-  $ git checkout -q hack
+
+  $ touch .gitignore
+  $ tit commit -m 'init'
+
+  $ echo fancy > README
+  $ tit commit -m 'README'
+  $ tit push up HEAD:master
+  $ tit checkout -b hack
 
 
 test
