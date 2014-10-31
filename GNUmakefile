@@ -23,7 +23,7 @@ artifacts       = $(installed) README.html PKGBUILD $(name).spec
 
 sources         = git-mantle.zsh
 
-version         = $(shell git describe --always --first-parent --long)
+revname         = $(shell git describe --always --first-parent --long)
 
 .DEFAULT_GOAL  := most
 
@@ -53,10 +53,11 @@ install: $(installed)
 
 .PHONY: tarball
 tarball: .git
+	pkgver=$(fix_version); \
 	git archive \
 	  --format tar.gz \
-	  --prefix $(name)-$(version)/ \
-	  --output $(name)-$(version).tar.gz \
+	  --prefix $(name)-$${pkgver}/ \
+	  --output $(name)-$${pkgver}.tar.gz \
 	  HEAD
 %.gz: %
 	$(GZIPCMD) -cn $< | tee $@ >/dev/null
@@ -68,14 +69,18 @@ $(name): $(name).zsh
 	$(INSTALL_SCRIPT) $< $@
 
 $(name).spec: $(name).spec.in
-	version=$(version); pkgver=$${$${version#v}:gs/-/+}; \
-	sed -e "/^Version:/s/__VERSION__/$$pkgver/" \
-	    $< | tee $@ >/dev/null
+	$(call subst_version,^Version:)
 
 PKGBUILD: PKGBUILD.in
-	version=$(version); pkgver=$${$${version#v}:gs/-/+}; \
-	sed -e "/^pkgver=/s/__VERSION__/$$pkgver/" \
+	$(call subst_version,^pkgver=)
+
+define subst_version
+	pkgver=$(fix_version); \
+	sed -e "/$(1)/s/__VERSION__/$$pkgver/" \
 	    $< | tee $@ >/dev/null
+endef
+
+fix_version = $${$${$${:-$(revname)}\#v}:gs/-/+}
 
 define first_in_path
   $(or \
