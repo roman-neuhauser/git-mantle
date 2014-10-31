@@ -1,31 +1,31 @@
 # vim: ft=make ts=8 sts=2 sw=2 noet
 
-PREFIX ?=         /usr/local
-BINDIR ?=         $(PREFIX)/bin
-MANDIR ?=         $(PREFIX)/share/man
-MAN1DIR ?=        $(MANDIR)/man1
+PREFIX         ?= /usr/local
+BINDIR         ?= $(PREFIX)/bin
+MANDIR         ?= $(PREFIX)/share/man
+MAN1DIR        ?= $(MANDIR)/man1
 
-CRAMCMD =         cram
-CRAM =            --shell $(SHELL)
+CRAMCMD         = cram
+CRAM            = --shell $(SHELL)
 export CRAM
 
-GZIPCMD ?=        gzip
-INSTALL_DATA ?=   install -m 644
-INSTALL_DIR ?=    install -m 755 -d
+GZIPCMD        ?= gzip
+INSTALL_DATA   ?= install -m 644
+INSTALL_DIR    ?= install -m 755 -d
 INSTALL_SCRIPT ?= install -m 755
-RST2HTML ?=       $(call first_in_path,rst2html.py rst2html)
+RST2HTML       ?= $(call first_in_path,rst2html.py rst2html)
 
-SHELL =           $(call first_in_path,zsh)
-name =            git-mantle
+SHELL           = $(call first_in_path,zsh)
+name            = git-mantle
 
-installed =       $(name).1.gz $(name)
-artifacts =       $(installed) README.html PKGBUILD $(name).spec
+installed       = $(name).1.gz $(name)
+artifacts       = $(installed) README.html PKGBUILD $(name).spec
 
-sources =         git-mantle.zsh
+sources         = git-mantle.zsh
 
-version =         $(shell git describe --always --first-parent --long)
+version         = $(shell git describe --always --first-parent --long)
 
-.DEFAULT_GOAL :=  most
+.DEFAULT_GOAL  := most
 
 .PHONY: all
 all: $(artifacts)
