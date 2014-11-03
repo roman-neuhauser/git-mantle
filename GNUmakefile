@@ -23,7 +23,7 @@ artifacts       = $(installed) README.html PKGBUILD $(name).spec
 
 sources         = git-mantle.zsh
 
-revname         = $(shell git describe --always --first-parent --long)
+revname         = $(shell git describe --always --first-parent)
 
 .DEFAULT_GOAL  := most
 
