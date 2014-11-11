@@ -65,7 +65,7 @@ if (( $# > 0 )); then
   head=$1
   if [[ $head == ?*/?* ]]; then
     public=${head%%/*}
-    head=${head##*/}
+    head=${head#*/}
   fi
 fi
 
