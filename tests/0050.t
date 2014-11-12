@@ -21,7 +21,6 @@ setup
 
   $ echo fancy > README
   $ tit commit -m 'README'
-  $ tit push up HEAD:master
 
   $ tit checkout -b hack
 
