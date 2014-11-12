@@ -29,6 +29,6 @@ test
 
 ::
 
-  $ git mantle up/fubar rn/feature
-  fatal: bad revision 'up/fubar'
+  $ git mantle up/fu/fubar rn/feature
+  fatal: bad revision 'up/fu/fubar'
   [1]

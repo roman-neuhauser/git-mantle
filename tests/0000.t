@@ -18,7 +18,7 @@ setup
 
   $ echo foo > foo
   $ tit commit -m 'added foo'
-  $ tit push rn HEAD:master
+  $ tit push rn HEAD:feature
   $ tit push up HEAD:master
 
 test
@@ -26,6 +26,6 @@ test
 
 ::
 
-  $ git mantle up/master rn/feature
-  fatal: bad revision 'rn/feature'
+  $ git mantle up/master rn/fix/feature
+  fatal: bad revision 'rn/fix/feature'
   [1]

@@ -16,13 +16,15 @@ setup
   $ git config --get mantle.public
   [1]
 
+  $ tit checkout -b my/master
+
   $ touch .gitignore
   $ tit commit -m 'init'
 
   $ echo fancy > README
   $ tit commit -m 'README'
 
-  $ tit checkout -b hack
+  $ tit checkout -b feature
 
   $ echo more fancy > README
   $ tit commit -m 'README fancier'
@@ -30,14 +32,14 @@ setup
   $ echo '.*.sw?' > .gitignore
   $ tit commit -m 'ignore vim swapfiles'
 
-  $ tit push rn HEAD:feature
+  $ tit push rn HEAD:hated/feature
 
 test
 ****
 
 ::
 
-  $ git mantle ./master rn/feature | headeronly
+  $ git mantle ./my/master rn/hated/feature | headeronly
   repo = git@pub.example.org
-  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a rn/feature
-  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 master
+  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a rn/hated/feature
+  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 ./my/master

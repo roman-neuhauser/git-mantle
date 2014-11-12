@@ -16,13 +16,15 @@ setup
   $ git config --get mantle.public
   [1]
 
+  $ tit checkout -b my/master
+
   $ touch .gitignore
   $ tit commit -m 'init'
 
   $ echo fancy > README
   $ tit commit -m 'README'
 
-  $ tit checkout -b hack
+  $ tit checkout -b random/hack
 
   $ echo more fancy > README
   $ tit commit -m 'README fancier'
@@ -35,7 +37,7 @@ test
 
 ::
 
-  $ git mantle ./master ./hack | headeronly
+  $ git mantle ./my/master ./random/hack | headeronly
   repo = ?
-  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a hack
-  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 master
+  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a ./random/hack
+  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 ./my/master
