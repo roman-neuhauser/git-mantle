@@ -16,7 +16,7 @@ setup
 
   $ echo fancy > README
   $ tit commit -m 'README'
-  $ tit push up HEAD:master
+  $ tit push up HEAD:next/master
 
   $ tit checkout -b hack
 
@@ -31,16 +31,16 @@ setup
 test
 ****
 
-Summarize the changes from `up/master` to `rn/feature`, offering
+Summarize the changes from `up/next/master` to `rn/feature`, offering
 them for pull from `remote.rn.url`.
 
 ::
 
-  $ git config --local mantle.upstream up/master
+  $ git config --local mantle.upstream up/next/master
   $ git mantle rn/feature
   repo = git@pub.example.org
   head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a rn/feature
-  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 up/master
+  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 up/next/master
   
    .gitignore | 1 +
    README     | 2 +-

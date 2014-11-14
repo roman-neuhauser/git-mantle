@@ -37,7 +37,7 @@ mantle_upstream="$(git config mantle.upstream || :)"
 mantle_upstream=${mantle_upstream:-upstream}
 upstream=${mantle_upstream%%/*}
 if [[ $mantle_upstream == ?*/?* ]]; then
-  base=${mantle_upstream##*/}
+  base=${mantle_upstream#*/}
 else
   base=HEAD
 fi
@@ -46,7 +46,7 @@ mantle_public="$(git config mantle.public || :)"
 mantle_public=${mantle_public:-origin}
 public=${mantle_public%%/*}
 if [[ $mantle_public == ?*/?* ]]; then
-  head=${mantle_public##*/}
+  head=${mantle_public#*/}
 else
   head=HEAD
 fi
@@ -55,7 +55,7 @@ if (( $# > 1 )); then
   # slashless `base` is a *remote* name
   upstream=$1
   if [[ $upstream == ?*/?* ]]; then
-    base=${upstream##*/}
+    base=${upstream#*/}
     upstream=${upstream%%/*}
   fi
   shift
@@ -65,7 +65,7 @@ if (( $# > 0 )); then
   head=$1
   if [[ $head == ?*/?* ]]; then
     public=${head%%/*}
-    head=${head##*/}
+    head=${head#*/}
   fi
 fi
 
@@ -78,13 +78,11 @@ fi
 
 declare bspec=$upstream/$base
 declare hspec=$public/$head
-bspec=${bspec#./}
-hspec=${hspec#./}
 
 declare bhash hhash
 
-bhash="$(query-git '%H' $bspec -- || exit 1)"
-hhash="$(query-git '%H' $hspec -- || exit 1)"
+bhash="$(query-git '%H' ${bspec#./} -- || exit 1)"
+hhash="$(query-git '%H' ${hspec#./} -- || exit 1)"
 
 declare mbase="$(git merge-base $bhash $hhash)" \
 || complain $? "fatal: no commits in common between $base and $head"
