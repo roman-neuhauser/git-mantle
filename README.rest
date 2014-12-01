@@ -62,15 +62,18 @@ pull them from.
   "`upstream/stable`", or a local branch name if it's prefixed with "./",
   or a remote name, in which case its default branch is used.
   If `BASE` is omitted, the value of `mantle.upstream` is used.
+  If, after possible `mantle.upstream` dereference, `BASE` contains no slash,
+  it's considered to be a remote name.
 
 `HEAD`
   *Refname* for the top-most commit included in the request.
   It can be a remote tracking branch like "`rn/feature`", or a local branch
   name if it's prefixed with "./", or a bare branch name which is then
   qualified with the value of `mantle.public`.
+  if `HEAD` contains no slash, it is considered to be a local branch name.
+  If `HEAD` is omitted it's treated as if it was "HEAD".
   If `HEAD` is "HEAD" it's resolved to a branch name and qualified
   with the value of `mantle.public`.
-  If `HEAD` is omitted it's treated as if it was "HEAD".
 
 
 Configuration
