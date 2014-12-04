@@ -104,11 +104,12 @@ git rev-list --reverse --format='tree %T%nparent %P%ntitle %s' $hhash --not $bha
     case $k in
     commit) cid=$v ;;
     tree)   tid=$v; cids+=($tid $cid) ;;
-    parent) parents+=($tid $cid $v)
+    parent)
       pid=($=v)
       if (( $#pid > 1 )); then
         complain 1 "fatal: '$bspec..$hspec' contains a merge"
       fi
+      parents+=($tid $cid $pid)
     ;;
     title)  cmessages+=($tid $v) ;;
     esac
