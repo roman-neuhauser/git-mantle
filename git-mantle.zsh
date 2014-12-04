@@ -119,6 +119,8 @@ declare -i seqwidth=$#nhashes
 declare -i totseqwidth=$((1 + 2*seqwidth))
 declare -a objects
 for tid cid pid in $parents; do
+  # git-diff-tree -r omits non-leaf paths,
+  # that's nice as i don't want those anyway
   git diff-tree --find-renames -r $pid $cid \
   | while IFS='	' read meta srcpath dstpath; do
       print $meta | read srcperms dstperms srchash dsthash mode
@@ -144,6 +146,13 @@ if [[ -n $do_stat ]]; then
   print
 fi
 
+# each commit in the range is represented by a heading:
+#   X/Y tree-id commit-id commit-title
+# followed by a (possibly empty) series of lines for each file
+# affected by this commit:
+#     object-id path
+# or, if the file is being moved in this commit:
+#     object-id srcpath "->" dstpath
 for tid cid in $cids; do
   print -f "%*d/%*d %s %s %s\n" -- \
     $seqwidth $((++i)) $seqwidth $nhashes \
