@@ -132,10 +132,6 @@ for tid cid pid in $parents; do
     done
 done
 
-# repo = git@github.com:roman-neuhauser/anarchinst.git
-# head = 6a91ccd3 readme-updates
-# base = c7303d75 master
-#
 print -f 'repo = %s\n' $purl
 print -f 'head = %s %s\n' $hhash $hspec
 print -f 'base = %s %s\n' $bhash $bspec
