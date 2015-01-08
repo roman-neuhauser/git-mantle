@@ -122,7 +122,7 @@ for tid cid pid in $parents; do
   # git-diff-tree -r omits non-leaf paths,
   # that's nice as i don't want those anyway
   git diff-tree --find-renames -r $pid $cid \
-  | while IFS='	' read meta srcpath dstpath; do
+  | while IFS=$'\t' read meta srcpath dstpath; do
       print $meta | read srcperms dstperms srchash dsthash mode
       objpath=$srcpath
       if [[ -n $dstpath ]]; then
