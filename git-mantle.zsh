@@ -95,7 +95,6 @@ declare purl="$(git config --get remote.$public.url)"
 [[ -z $purl ]] && purl='?'
 
 declare -A cmessages
-declare -a cids
 declare -a parents
 # git-rev-list --format (or --pretty) prepends each commit
 # with "commit %H\n" so there's no need to request %H again
@@ -103,13 +102,13 @@ git rev-list --reverse --format='tree %T%nparent %P%ntitle %s' $hhash --not $bha
 | while read k v; do
     case $k in
     commit) cid=$v ;;
-    tree)   tid=$v; cids+=($tid $cid) ;;
+    tree)   tid=$v ;;
     parent)
       pid=($=v)
       if (( $#pid > 1 )); then
         complain 1 "fatal: '$bspec..$hspec' contains a merge"
       fi
-      parents+=($tid $cid $pid)
+      parents+=($tid $cid "$pid")
     ;;
     title)  cmessages+=($tid $v) ;;
     esac
@@ -154,7 +153,7 @@ fi
 #     object-id path
 # or, if the file is being moved in this commit:
 #     object-id srcpath "->" dstpath
-for tid cid in $cids; do
+for tid cid ignored in $parents; do
   print -f "%*d/%*d %s %s %s\n" -- \
     $seqwidth $((++i)) $seqwidth $nhashes \
     ${tid:0:8} ${cid:0:8} $cmessages[$tid]
