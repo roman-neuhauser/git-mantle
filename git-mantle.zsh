@@ -10,9 +10,9 @@ function complain
   exit $1
 }
 
-function query-git # {{{
+function get-revhash # {{{
 {
-  git show --no-patch --format=$1 "${@[2,-1]}"
+  git rev-list --max-count=1 "$@"
 } # }}}
 
 declare do_stat=--stat=72 output=
@@ -81,8 +81,8 @@ declare hspec=$public/$head
 
 declare bhash hhash
 
-bhash="$(query-git '%H' ${bspec#./} -- || exit 1)"
-hhash="$(query-git '%H' ${hspec#./} -- || exit 1)"
+bhash="$(get-revhash ${bspec#./} -- || exit 1)"
+hhash="$(get-revhash ${hspec#./} -- || exit 1)"
 
 declare mbase="$(git merge-base $bhash $hhash)" \
 || complain $? "fatal: no commits in common between $base and $head"
