@@ -14,6 +14,8 @@ BuildArch:      noarch
 BuildRoot:      %_tmppath/%name-%version-build
 Requires:       %_sbindir/sendmail
 Requires:       zsh
+BuildRequires:  cram
+BuildRequires:  git
 BuildRequires:  zsh
 
 %define gitmantle_make  make PREFIX=%{_prefix}
@@ -24,7 +26,10 @@ Generate an overview of changes on a branch.
 %setup -q
 
 %build
-%gitmantle_make
+%gitmantle_make most
+
+%check
+%gitmantle_make check
 
 %install
 %gitmantle_make install DESTDIR=%{buildroot}
