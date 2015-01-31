@@ -152,9 +152,9 @@ fi
 for tid cid ignored in $parents; do
   print -f "%*d/%*d %s %s %s\n" -- \
     $seqwidth $((++i)) $seqwidth $nhashes \
-    ${tid:0:8} ${cid:0:8} $cmessages[$tid]
+    $tid[1,8] $cid[1,8] $cmessages[$tid]
   for _tid oid pth in $objects; do
     [[ $_tid == $tid ]] || continue
-    print -f "%*s %s %s\n" $totseqwidth '' ${oid:0:8} $pth
+    print -f "%*s %s %s\n" $totseqwidth '' $oid[1,8] $pth
   done
 done
