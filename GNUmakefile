@@ -26,7 +26,9 @@ sources         = $(name).zsh
 
 revname         = $(shell git describe --always --first-parent)
 
-.DEFAULT_GOAL  := most
+ALL_INCLUSIVE  ?= 0
+
+.DEFAULT_GOAL  := $(if $(subst 0,,$(ALL_INCLUSIVE)),all,most)
 
 .PHONY: all
 all: $(artifacts)
@@ -39,7 +41,7 @@ clean:
 	$(RM) $(artifacts)
 
 .PHONY: check
-check: all
+check: $(.DEFAULT_GOAL)
 	$(CRAMCMD) tests
 
 .PHONY: html
