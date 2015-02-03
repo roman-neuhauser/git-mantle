@@ -39,5 +39,5 @@ test
 
   $ git mantle ./my/master ./random/hack | headeronly
   repo = ?
-  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a ./random/hack
+  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a random/hack
   base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 ./my/master

@@ -38,7 +38,7 @@ test
 
   $ git mantle
   repo = git@pub.example.org
-  head = 65e734d2b76d2fd9af8f77d76855b2fb9dc3da18 rn/hack
+  head = 65e734d2b76d2fd9af8f77d76855b2fb9dc3da18 hack
   base = e62e1b451a9278bbe09118216d7e48bf78d54155 up/master
   
    .gitignore | +1 \+  (re)

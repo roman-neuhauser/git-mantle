@@ -38,5 +38,5 @@ test
 
   $ git mantle up/my/master ./this/hack | headeronly
   repo = ?
-  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a ./this/hack
+  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a this/hack
   base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 up/my/master

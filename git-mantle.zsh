@@ -78,13 +78,13 @@ if [[ $head == HEAD ]]; then
   head=${head#refs/*/}
 fi
 
-declare bspec=$upstream/$base
-declare hspec=$public/$head
+declare bspec=${${:-$upstream/}#./}$base
+declare hspec=${${:-$public/}#./}$head
 
 declare bhash hhash
 
-bhash="$(get-revhash ${bspec#./} -- || exit 1)"
-hhash="$(get-revhash ${hspec#./} -- || exit 1)"
+bhash="$(get-revhash $bspec -- || exit 1)"
+hhash="$(get-revhash $hspec -- || exit 1)"
 
 declare mbase="$(git merge-base $bhash $hhash)" \
 || complain $? "fatal: no commits in common between $base and $head"
@@ -138,8 +138,8 @@ for tid cid pid in $parents; do
 done
 
 print -f 'repo = %s\n' $purl
-print -f 'head = %s %s\n' $hhash $hspec
-print -f 'base = %s %s\n' $bhash $bspec
+print -f 'head = %s %s\n' $hhash $head
+print -f 'base = %s %s\n' $bhash $upstream/$base
 
 if [[ -n $do_stat ]]; then
   print

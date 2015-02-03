@@ -38,7 +38,7 @@ test
 
   $ git mantle ./HEAD~2 ./HEAD
   repo = ?
-  head = b35b17756cd46fbc48977114dc0110d6fe36c740 ./hack
+  head = b35b17756cd46fbc48977114dc0110d6fe36c740 hack
   base = 4d87462ad031a7a165e39033f84b18935bc2d159 ./HEAD~2
   
    .gitignore | +1 \+   (re)

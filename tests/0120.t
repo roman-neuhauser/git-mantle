@@ -40,7 +40,7 @@ test
 
   $ git mantle up rn/feature
   repo = git@pub.example.org
-  head = b35b17756cd46fbc48977114dc0110d6fe36c740 rn/feature
+  head = b35b17756cd46fbc48977114dc0110d6fe36c740 feature
   base = 4d87462ad031a7a165e39033f84b18935bc2d159 up/master
   
    .gitignore | +1 \+   (re)
