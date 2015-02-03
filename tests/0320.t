@@ -17,7 +17,7 @@ test
 
 ::
 
-  $ git config --local mantle.upstream omg/wtf
+  $ git config mantle.upstream omg/wtf
   $ git mantle
   fatal: bad revision 'omg/wtf'
   [1]

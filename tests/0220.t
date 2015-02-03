@@ -36,7 +36,7 @@ them for pull from `remote.rn.url`.
 
 ::
 
-  $ git config --local mantle.upstream up/next/master
+  $ git config mantle.upstream up/next/master
   $ git mantle rn/feature
   repo = git@pub.example.org
   head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a rn/feature

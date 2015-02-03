@@ -23,8 +23,8 @@ setup
 test
 ****
 
-  $ git config --local mantle.upstream up/master
-  $ git config --local mantle.public lol
+  $ git config mantle.upstream up/master
+  $ git config mantle.public lol
   $ git mantle
   fatal: bad revision 'lol/hack'
   [1]

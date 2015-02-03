@@ -33,8 +33,8 @@ test
 
 ::
 
-  $ git config --local mantle.upstream up/master
-  $ git config --local mantle.public rn
+  $ git config mantle.upstream up/master
+  $ git config mantle.public rn
 
   $ git mantle
   repo = git@pub.example.org
