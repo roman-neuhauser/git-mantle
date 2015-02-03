@@ -16,13 +16,13 @@ setup
   $ git config --get mantle.public
   [1]
 
-  $ tit checkout -b my/master
-
   $ touch .gitignore
   $ tit commit -m 'init'
 
   $ echo fancy > README
   $ tit commit -m 'README'
+
+  $ tit branch -M master my/master
 
   $ tit checkout -b feature
 
