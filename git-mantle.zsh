@@ -70,10 +70,12 @@ if (( $# > 0 )); then
 fi
 
 if [[ $base == HEAD ]]; then
-  base=${${:-$(git symbolic-ref --short refs/remotes/$upstream/HEAD)}##*/} || exit 1
+  base=$(git symbolic-ref refs/remotes/$upstream/HEAD) || exit 1
+  base=${base#refs/remotes/*/}
 fi
 if [[ $head == HEAD ]]; then
-  head=$(git symbolic-ref --short $head)
+  head=$(git symbolic-ref HEAD)
+  head=${head#refs/*/}
 fi
 
 declare bspec=$upstream/$base
