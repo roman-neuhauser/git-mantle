@@ -47,9 +47,9 @@ test
   head = 7f78ba9858f68d5acfe6cc7cbf36fb280c7f09c7 rn/feature
   base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 up/master
   
-   .gitignore | 1 +
-   README     | 1 -
-   README.txt | 1 +
+   .gitignore | +1 \+ (re)
+   README     | +1 \- (re)
+   README.txt | +1 \+ (re)
    3 files changed, 2 insertions(+), 1 deletion(-)
    delete mode 100644 README
    create mode 100644 README.txt

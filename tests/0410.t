@@ -47,9 +47,9 @@ test
   head = 651e68ca3dceadcf9e816d17b999ce6586c0bcf8 rn/feature
   base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 up/master
   
-   README         | 2 +-
-   doc/.gitignore | 1 +
-   doc/index.rst  | 1 +
+   README         | +2 \+- (re)
+   doc/.gitignore | +1 \+  (re)
+   doc/index.rst  | +1 \+  (re)
    3 files changed, 3 insertions(+), 1 deletion(-)
    create mode 100644 doc/.gitignore
    create mode 100644 doc/index.rst

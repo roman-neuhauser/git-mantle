@@ -42,8 +42,8 @@ them for pull from `remote.rn.url`.
   head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a rn/feature
   base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 up/next/master
   
-   .gitignore | 1 +
-   README     | 2 +-
+   .gitignore | +1 \+  (re)
+   README     | +2 \+- (re)
    2 files changed, 2 insertions(+), 1 deletion(-)
   
   1/2 76a23b86 4fafaffe README fancier
