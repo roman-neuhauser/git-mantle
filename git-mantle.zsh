@@ -89,7 +89,8 @@ hhash="$(get-revhash ${hspec#./} -- || exit 1)"
 declare mbase="$(git merge-base $bhash $hhash)" \
 || complain $? "fatal: no commits in common between $base and $head"
 
-declare -i nhashes="$(git rev-list --count $hhash --not $bhash)"
+# rev-list --count is a post-1.7.1 feature
+declare -i nhashes="$(git rev-list $hhash --not $bhash | wc -l)"
 
 (( $nhashes )) || complain 1 "fatal: '$bspec..$hspec' is an empty range"
 
