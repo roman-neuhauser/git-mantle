@@ -14,7 +14,7 @@ setup
   $ touch .gitignore
   $ tit commit -m 'init'
 
-  $ echo fancy > README
+  $ print -f '%s\n' fancy what ever > README
   $ tit commit -m 'README'
   $ tit push up HEAD:master
 
@@ -38,14 +38,14 @@ test
 
   $ git mantle
   repo = git@pub.example.org
-  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a rn/hack
-  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 up/master
+  head = 65e734d2b76d2fd9af8f77d76855b2fb9dc3da18 rn/hack
+  base = e62e1b451a9278bbe09118216d7e48bf78d54155 up/master
   
    .gitignore | +1 \+  (re)
    README     | +2 \+- (re)
-   2 files changed, 2 insertions(+), 1 deletion(-)
+   2 files changed, 2 insertions(+), 3 deletions(-)
   
-  1/2 76a23b86 4fafaffe README fancier
+  1/2 76a23b86 d05cb8aa README fancier
       162441d0 README
-  2/2 87990615 14f27d4f ignore vim swapfiles
+  2/2 87990615 65e734d2 ignore vim swapfiles
       32682119 .gitignore

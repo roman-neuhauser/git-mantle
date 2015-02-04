@@ -14,7 +14,7 @@ setup
   $ touch .gitignore
   $ tit commit -m 'init'
 
-  $ echo fancy > README
+  $ print -f '%s\n' fancy whatever > README
   $ tit commit -m 'README'
   $ tit push up HEAD:next/master
 
@@ -39,14 +39,14 @@ them for pull from `remote.rn.url`.
   $ git config mantle.upstream up/next/master
   $ git mantle rn/feature
   repo = git@pub.example.org
-  head = 14f27d4fbbce37dd86f710678cd9b63a99f04c0a rn/feature
-  base = 319bf43334fbb706fdbeee1cbfa0d52ec3062930 up/next/master
+  head = b35b17756cd46fbc48977114dc0110d6fe36c740 rn/feature
+  base = 4d87462ad031a7a165e39033f84b18935bc2d159 up/next/master
   
    .gitignore | +1 \+  (re)
    README     | +2 \+- (re)
-   2 files changed, 2 insertions(+), 1 deletion(-)
+   2 files changed, 2 insertions(+), 2 deletions(-)
   
-  1/2 76a23b86 4fafaffe README fancier
+  1/2 76a23b86 c38f7c05 README fancier
       162441d0 README
-  2/2 87990615 14f27d4f ignore vim swapfiles
+  2/2 87990615 b35b1775 ignore vim swapfiles
       32682119 .gitignore
