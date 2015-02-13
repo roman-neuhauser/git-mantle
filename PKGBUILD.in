@@ -25,6 +25,6 @@ package() {
 
 _make() {
   cd "$srcdir/$pkgname-$pkgver"
-  make "$@"
+  make PREFIX=/usr "$@"
 }
 
