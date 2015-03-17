@@ -56,11 +56,10 @@ install: $(installed)
 
 .PHONY: tarball
 tarball: .git
-	pkgver=$(fix_version); \
 	git archive \
 	  --format tar.gz \
-	  --prefix $(name)-$${pkgver}/ \
-	  --output $(name)-$${pkgver}.tar.gz \
+	  --prefix $(name)-$(fix_version)/ \
+	  --output $(name)-$(fix_version).tar.gz \
 	  HEAD
 %.gz: %
 	$(GZIPCMD) -cn $< | tee $@ >/dev/null
@@ -78,12 +77,11 @@ PKGBUILD: PKGBUILD.in
 	$(call subst_version,^pkgver=)
 
 define subst_version
-	pkgver=$(fix_version); \
-	sed -e "/$(1)/s/__VERSION__/$$pkgver/" \
+	sed -e "/$(1)/s/__VERSION__/$(fix_version)/" \
 	    $< | tee $@ >/dev/null
 endef
 
-fix_version = $${$${$${:-$(revname)}\#v}:gs/-/+}
+fix_version = $(subst -,+,$(patsubst v%,%,$(revname)))
 
 define first_in_path
   $(or \
