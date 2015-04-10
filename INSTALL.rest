@@ -1,0 +1,105 @@
+.. vim: ft=rst sts=2 sw=2 tw=77
+
+.. :Author: Roman Neuhauser
+.. :Contact: neuhauser+git-mantle@sigpipe.cz
+.. :Copyright: This document is in the public domain.
+
+.. default-role:: emphasis
+
+=============================================================================
+                            Installing git-mantle
+=============================================================================
+
+
+Runtime Dependencies
+====================
+
+These are essential for `git-mantle` to function.
+
+* Git_
+* Zsh_
+
+.. _Git: https://git-scm.com/
+.. _Zsh: http://www.zsh.org/
+
+
+Buildtime Dependencies
+======================
+
+These are used to build and (optionally) test and document `git-mantle`.
+
+* `GNU Make`_
+* Docutils_ (optional)
+* Cram_ (optional)
+* Git (optional)
+* Zsh
+
+.. _GNU Make: http://www.gnu.org/software/make/
+.. _Docutils: http://docutils.sf.net/
+.. _Cram: https://bitheap.org/cram/
+
+Both Docutils and Cram imply a Python interpreter.
+Docutils is used to generate HTML version of README.rest and this file.
+Cram is used to drive the functional testsuite.
+
+
+Use a Ready-Made Package
+========================
+
+Packages_ for ArchLinux, CentOS, Fedora, Redhat, SUSE, ScientificLinux and
+openSUSE are available from the `openSUSE Build Service`_ (OBS).
+
+.. _Packages:
+  http://software.opensuse.org/download.html?project=home%3Aroman-neuhauser&package=git-mantle
+.. _`openSUSE Build Service`: https://build.opensuse.org/
+
+
+Build a Package From Provided Descriptors
+=========================================
+
+The abovementioned packages are built using the package descriptions
+provided with git-mantle.  `git-mantle.spec` supports rpm-based distros,
+`PKGBUILD` is used to create packages for ArchLinux.
+Instructions on using these are beyond the scope of this document.
+
+
+Install From Source
+===================
+
+Most prominent `make(1)` targets:
+
+* `check`
+
+  Run the test suite.
+
+* `all`
+
+  Build the program and its manual page, and convert reSt files to HTML.
+
+* `most`
+
+  Like all, but skip the reSt-to-HTML conversion.
+
+* `install`
+
+  Install the program and its manual page.
+
+The `GNUmakefile` is parameterized with the usual macros (and then some).
+Notably, `PREFIX` (defaults to `/usr/local`) and `DESTDIR` (empty by default)
+are used to derive installation paths.  Buildtime `PATH` is sanitized to
+`{,/usr}/{,s}bin` by default.  If this is too tight for your system
+(eg. FreeBSD) you will need to pass the correct value on the command line.
+
+Example
++++++++
+
+Let's say your system has Cram installed as `cram3` and the default
+PATH value used by the makefile prevents make from finding some tools.
+To build the artifacts and run the tests::
+
+  make check PREFIX=/usr CRAMCMD=cram3 PATH="$PATH"
+
+To install the artifacts (`PREFIX` must be the same during build and
+install)::
+
+  sudo make install PREFIX=/usr DESTDIR=/tmp/fakeroot
