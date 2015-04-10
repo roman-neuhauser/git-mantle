@@ -16,6 +16,7 @@ INSTALL_SCRIPT ?= install -m 755
 RST2HTML       ?= $(call first_in_path,rst2html.py rst2html)
 
 SHELL           = $(call first_in_path,zsh)
+PATH            = /usr/bin:/bin:/usr/sbin:/sbin
 
 name            = git-mantle
 
