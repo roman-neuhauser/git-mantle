@@ -1,0 +1,185 @@
+.. vim: ft=rst sts=2 sw=2 tw=77
+.. default-role:: literal
+
+=============================================================================
+                                 git-mantle
+=============================================================================
+-----------------------------------------------------------------------------
+                 Generate an overview of changes on a branch
+-----------------------------------------------------------------------------
+
+:Author: Roman Neuhauser
+:Contact: neuhauser+git-mantle@sigpipe.cz
+:Copyright: This document is in the public domain.
+
+.. this file is marked up using reStructuredText
+   lines beginning with ".." are reST directives
+   "foo_" or "`foo bar`_" is a link, defined at ".. _foo" or ".. _foo bar"
+   "::" introduces a literal block (usually some form of code)
+   "`foo`" is some kind of identifier
+   suspicious backslashes in the text ("`std::string`\s") are required for
+   reST to recognize the preceding character as syntax
+
+Introduction
+============
+
+Pull requests are often sent repeatedly: Alice clones Bob's repository,
+commits some changes and sends him a pull request.  Bob reviews the
+proposed changes and requests a few modifications.
+
+Alice tweaks her branch as requested and sends another pull request.
+Bob is a busy person and wants a very quick overview of the differences
+between the old and new pull request.  Alice would do well to tell Bob which
+parts of the patch series changed in the second iteration.
+
+Bob may find `git-mantle`\s output useful since its output contains almost
+no non-functional prose, and includes `<tree-id>`\s of submitted commits,
+and for each submitted commit, the `<blob-id>` of each affected file.
+
+`git-mantle` is used by `git-pimp`_ to create cover letters.
+
+.. _`git-request-pull(1)`: http://git-scm.com/docs/git-request-pull
+.. _`git-pimp`: https://github.com/roman-neuhauser/git-pimp
+
+
+Synopsis
+========
+
+::
+
+  git mantle [--output FILE] [diffstat-opts] [[BASE] HEAD]
+
+
+Description
+===========
+
+Generate an overview of changes on a branch.
+The output summarizes changes from `BASE` to `HEAD` and suggests where to
+pull them from.
+
+`BASE`
+  *Refname* to start from.  It can be a remote-tracking branch like
+  "`upstream/stable`", or a local branch name if it's prefixed with "./",
+  or a remote name, in which case its default branch is used.
+  If `BASE` is omitted, the value of `mantle.upstream` is used.
+  If, after possible `mantle.upstream` dereference, `BASE` contains no slash,
+  it's considered to be a remote name.
+
+`HEAD`
+  *Refname* for the top-most commit included in the request.
+  It can be a remote tracking branch like "`rn/feature`", or a local branch
+  name if it's prefixed with "./", or a bare branch name which is then
+  qualified with the value of `mantle.public`.
+  if `HEAD` contains no slash, it is considered to be a local branch name.
+  If `HEAD` is omitted it's treated as if it was "HEAD".
+  If `HEAD` is "HEAD" it's resolved to a branch name and qualified
+  with the value of `mantle.public`.
+
+
+Configuration
+=============
+
+`mantle.upstream`
+  Default `BASE`.  Defaults to "`upstream`".
+
+`mantle.public`
+  Default remote to qualify `HEAD`.  Defaults to "`origin`".
+
+`remote.${mantle.public}.url`
+  URL used in the output to suggest where to pull from.
+
+
+Examples
+========
+
+These examples assume a repository with these settings in place::
+
+  git remote add -m master upstream ...
+  git remote add -m master rn ...
+  git config mantle.upstream upstream
+  git config mantle.public rn
+
+* ::
+
+    git mantle upstream/master rn/feature
+
+  Summarize the changes from `upstream/master` to `rn/feature`, offering
+  them for pull from `remote.rn.url`.
+
+* ::
+
+    git mantle upstream rn/feature
+
+  Summarize the changes from `upstream/HEAD` to `rn/feature`, offering
+  them for pull from `remote.rn.url`.
+
+* ::
+
+    git mantle rn/feature
+
+  Summarize the changes from `mantle.upstream` to `rn/feature`, offering
+  them for pull from `remote.rn.url`.
+
+* ::
+
+    git mantle
+
+  Summarize the changes from `mantle.upstream` to the head of a branch
+  in `mantle.public`, offering them for pull from `remote.<name>.url` where
+  `<name>` is derived from `mantle.public`.  The branch name is derived from
+  the active branch: if the active branch has an upstream branch configured
+  (in `mantle.public`), that branch is used.  If there's no upstream branch
+  configured, a branch eponymous with the active branch is used.
+
+
+Example output
+==============
+
+This example comes from `git-mantle`'s test suite.  The changes from `base`
+to `head` can be fetched from `repo`; the diffstat pertains to the whole
+range; the rest details individual commits.  ::
+
+  repo = git@pub.example.org
+  head = 2ab371a4204e15ee16a75e9ae81cfc82a5714c07 rn/feature
+  base = 85b915e100b621d1ec7783b6a9b8dc6b09233614 up/master
+
+   .gitignore | 1 +
+   README     | 1 -
+   README.txt | 1 +
+   3 files changed, 2 insertions(+), 1 deletion(-)
+   delete mode 100644 README
+   create mode 100644 README.txt
+
+  1/3 76a23b86 043603cc README fancier
+      162441d0 README
+  2/3 87990615 ab984c9b ignore vim swapfiles
+      32682119 .gitignore
+  3/3 2c842d2d 2ab371a4 README is now README.txt
+
+Compare with output produced for the same data by `git-request-pull(1)`_::
+
+  The following changes since commit 85b915e100b621d1ec7783b6a9b8dc6b09233614:
+
+    README (2014-08-20 20:57:57 +0000)
+
+  are available in the git repository at:
+
+    git@pub.example.org rn/feature
+
+  for you to fetch changes up to 2ab371a4204e15ee16a75e9ae81cfc82a5714c07:
+
+    README is now README.txt (2014-09-04 22:54:01 +0200)
+
+  ----------------------------------------------------------------
+  git-mantle test suite (3):
+        README fancier
+        ignore vim swapfiles
+        README is now README.txt
+
+   .gitignore | 1 +
+   README     | 1 -
+   README.txt | 1 +
+   3 files changed, 2 insertions(+), 1 deletion(-)
+   delete mode 100644 README
+   create mode 100644 README.txt
+
