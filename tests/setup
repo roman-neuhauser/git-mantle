@@ -55,5 +55,5 @@ function init-repos # {{{
 
 function headeronly # {{{
 {
-  sed -n '0,/^$/ { /^$/q; p; }'
+  sed -n '/^$/q;p'
 } # }}}
