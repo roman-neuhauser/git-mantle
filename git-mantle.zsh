@@ -94,8 +94,21 @@ declare -i nhashes="$(git rev-list $hhash --not $bhash | wc -l)"
 
 (( $nhashes )) || complain 1 "fatal: '$bspec..$hspec' is an empty range"
 
+# this comes from RFC3986 Appendix B, aka
+# https://tools.ietf.org/html/rfc3986#appendix-B
+# it misparses schema-less strings ("git@example.org")
+# hence the *://* guard
+declare -r matchurl='^(([^:/?#]+):)?(//([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?'
+
 declare purl="$(git config --get remote.$public.url)"
 [[ -z $purl ]] && purl='?'
+if [[ $purl = *://* && $purl =~ $matchurl ]]; then
+  local -a parts; parts=("${(@)match}"); match=()
+  if [[ $parts[4] =~ '^([^:]+:)([^@]*)?(@.*)$' ]]; then
+    match[2]=REDACTED
+    purl=$parts[2]://${(j::)match}
+  fi
+fi
 
 declare -A cmessages
 declare -a parents
