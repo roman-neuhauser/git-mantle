@@ -9,6 +9,8 @@ export HOME="$TESTDIR"
 export XDG_CONFIG_HOME="$TESTDIR"
 export PATH="${TESTDIR%/*}:$PATH"
 
+setopt clobber
+
 function tit # {{{
 {
   case $1 in
