@@ -104,8 +104,8 @@ declare purl="$(git config --get remote.$public.url)"
 [[ -z $purl ]] && purl='?'
 if [[ $purl = *://* && $purl =~ $matchurl ]]; then
   local -a parts; parts=("${(@)match}"); match=()
-  if [[ $parts[4] =~ '^([^:]+:)([^@]*)?(@.*)$' ]]; then
-    match[2]=REDACTED
+  if [[ $parts[4] =~ '^([^:]+)(:[^@]*)?(@.*)$' ]]; then
+    match[2]=()
     purl=$parts[2]://${(j::)match}
   fi
 fi
